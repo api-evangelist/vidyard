@@ -1,0 +1,37 @@
+{
+  "url": "https://www.vidyard.com/blog/",
+  "rss": "https://www.vidyard.com/feed/",
+  "fetched": "2026-06-12",
+  "posts": [
+    {
+      "title": "Turning HubSpot signals into pipeline: A smarter approach to personalized outreach",
+      "url": "https://www.vidyard.com/blog/hubspot-signals-personalized-outreach/",
+      "author": "Zoe Janssens",
+      "published": "2026-06-10"
+    },
+    {
+      "title": "A Video Playbook for Customer Adoption and Retention",
+      "url": "https://www.vidyard.com/blog/video-playbook-customer-adoption-retention/",
+      "author": "Zoe Janssens",
+      "published": "2026-06-02"
+    },
+    {
+      "title": "How Financial Services Firms Are Using AI Avatars to Slash No-Shows by 30%",
+      "url": "https://www.vidyard.com/blog/financial-services-firms-ai-avatars-slash-no-shows/",
+      "author": "Kadi Koroma",
+      "published": "2026-05-15"
+    },
+    {
+      "title": "Stop Losing Meetings You Already Earned",
+      "url": "https://www.vidyard.com/blog/reduce-no-shows-recover-meetings/",
+      "author": "Zoe Janssens",
+      "published": "2026-05-07"
+    },
+    {
+      "title": "The Best Loom Alternatives by Use Case",
+      "url": "https://www.vidyard.com/blog/loom-alternatives/",
+      "author": "Zoe Janssens",
+      "published": "2026-05-04"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "vidyard": "https://www.vidyard.com/",
+    "api": "https://api.vidyard.com/dashboard/v1/",
+    "analyticsApi": "https://analytics-api.vidyard.com/v1/",
+    "Player": {
+      "@id": "vidyard:Player",
+      "@type": "schema:SoftwareApplication"
+    },
+    "Video": {
+      "@id": "schema:VideoObject"
+    },
+    "Chapter": {
+      "@id": "vidyard:Chapter"
+    },
+    "Organization": {
+      "@id": "schema:Organization"
+    },
+    "Team": {
+      "@id": "schema:Organization"
+    },
+    "User": {
+      "@id": "schema:Person"
+    },
+    "Event": {
+      "@id": "schema:Event"
+    },
+    "Campaign": {
+      "@id": "schema:MarketingAction"
+    },
+    "Webhook": {
+      "@id": "vidyard:Webhook"
+    },
+    "Tag": {
+      "@id": "schema:DefinedTerm"
+    },
+    "Caption": {
+      "@id": "vidyard:Caption"
+    },
+    "Analytics": {
+      "@id": "vidyard:Analytics"
+    },
+    "ViewerData": {
+      "@id": "vidyard:ViewerData"
+    },
+    "AIVideo": {
+      "@id": "vidyard:AIVideo"
+    },
+    "PersonalizedVideo": {
+      "@id": "vidyard:PersonalizedVideo"
+    },
+    "sharingLink": {
+      "@id": "vidyard:sharingLink",
+      "@type": "@id"
+    },
+    "embedCode": {
+      "@id": "vidyard:embedCode"
+    },
+    "authToken": {
+      "@id": "vidyard:authToken"
+    },
+    "viewEvents": {
+      "@id": "vidyard:viewEvents"
+    },
+    "crmIntegration": {
+      "@id": "vidyard:crmIntegration"
+    },
+    "name": "schema:name",
+    "description": "schema:description",
+    "url": "schema:url",
+    "image": "schema:image",
+    "dateCreated": "schema:dateCreated",
+    "dateModified": "schema:dateModified"
+  },
+  "@type": "schema:WebAPI",
+  "name": "Vidyard API",
+  "description": "Vidyard is a video platform for business that provides REST APIs for managing video libraries, generating sharing links, tracking viewer analytics, and integrating with CRM and marketing tools.",
+  "url": "https://developer.vidyard.com/",
+  "provider": {
+    "@type": "schema:Organization",
+    "name": "Vidyard",
+    "url": "https://www.vidyard.com/",
+    "sameAs": [
+      "https://github.com/Vidyard",
+      "https://www.linkedin.com/company/vidyard",
+      "https://x.com/vidyard"
+    ]
+  },
+  "hasOfferCatalog": {
+    "@type": "schema:OfferCatalog",
+    "name": "Vidyard API Endpoints",
+    "itemListElement": [
+      {
+        "@type": "schema:WebAPI",
+        "name": "Vidyard Dashboard API",
+        "url": "https://api.vidyard.com/dashboard/v1/",
+        "documentation": "https://developer.vidyard.com/"
+      },
+      {
+        "@type": "schema:WebAPI",
+        "name": "Vidyard Video Agent API",
+        "url": "https://api.vidyard.com/",
+        "documentation": "https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API"
+      },
+      {
+        "@type": "schema:WebAPI",
+        "name": "Vidyard Analytics Webhook API",
+        "url": "https://analytics-api.vidyard.com/v1/",
+        "documentation": "https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook"
+      }
+    ]
+  }
+}
