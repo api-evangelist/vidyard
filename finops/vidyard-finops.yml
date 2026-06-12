@@ -1,0 +1,111 @@
+specificationVersion: "1.0"
+name: Vidyard FinOps
+description: >
+  FinOps Framework FOCUS-aligned cost visibility profile for Vidyard API and
+  platform consumption. Vidyard pricing is seat-based for self-serve tiers and
+  fully custom (annual contract) for Enterprise, which is the only tier with
+  API access. Cost drivers include number of seats, AI video generation volume,
+  custom avatar usage, and add-on products such as Video Agent.
+url: https://www.vidyard.com/pricing/
+created: "2026-06-12"
+modified: "2026-06-12"
+
+provider:
+  name: Vidyard
+  website: https://www.vidyard.com/
+  pricingPage: https://www.vidyard.com/pricing/
+  billingContact: https://www.vidyard.com/contact/
+  currency: USD
+
+costModel:
+  type: seat-based
+  apiAccessTier: Enterprise
+  billingCycle: monthly (self-serve) / annual (Enterprise)
+  description: >
+    Vidyard charges per seat on self-serve plans (Free, Starter) and moves to
+    custom annual contracts for Teams and Enterprise. API access is exclusively
+    an Enterprise feature with pricing negotiated directly with Vidyard sales.
+    No usage-based API call billing is publicly documented.
+
+skus:
+  - id: vidyard-free
+    name: Free Plan
+    description: Individual use; no API access
+    unitPrice: 0.00
+    currency: USD
+    unit: seat/month
+    tier: Free
+
+  - id: vidyard-starter
+    name: Starter Plan
+    description: Individual sales/marketing; no API access
+    unitPrice: 59.00
+    currency: USD
+    unit: seat/month
+    tier: Starter
+
+  - id: vidyard-teams
+    name: Teams Plan
+    description: Team tier with CRM integrations; no API access; custom pricing
+    unitPrice: custom
+    currency: USD
+    unit: user/month
+    tier: Teams
+    notes: Best for 5+ users. Invoice billing. Estimated ~$99/user/month.
+
+  - id: vidyard-enterprise
+    name: Enterprise Plan
+    description: >
+      Full platform with API access, SSO, unlimited integrations, and custom
+      security. Includes Dashboard API, Video Agent API, and Analytics
+      Webhook API access. Annual contract required.
+    unitPrice: custom
+    currency: USD
+    unit: user/year
+    tier: Enterprise
+    notes: Estimated $150–$200+ per user/month on annual contract.
+
+  - id: vidyard-video-agent-addon
+    name: Video Agent Add-On
+    description: >
+      AI-powered automated personalized video creation add-on. Available on
+      Starter and above; bundled in Enterprise. Enables the Video Agent API.
+    unitPrice: 24.00
+    currency: USD
+    unit: seat/month
+    tier: Add-On
+    notes: Pricing approximate; commonly bundled into Enterprise packages.
+
+costAllocation:
+  dimensions:
+    - name: Seats
+      description: Primary cost driver across all plans
+    - name: Plan Tier
+      description: Free / Starter / Teams / Enterprise determines feature and API access
+    - name: AI Video Volume
+      description: >
+        AI video generation consumes a monthly quota on Free (15/month);
+        unlimited on paid tiers subject to contract terms
+    - name: Add-Ons
+      description: Video Agent and other add-ons carry separate per-seat charges
+
+optimization:
+  recommendations:
+    - title: Right-size seat count
+      description: >
+        Audit active seats regularly. Vidyard Enterprise contracts are typically
+        annual; reducing seats mid-contract may require renegotiation.
+    - title: Evaluate API necessity before upgrading
+      description: >
+        API access requires Enterprise tier. Evaluate whether webhook-based
+        integrations (no custom API code) on Teams tier can meet requirements
+        before committing to Enterprise pricing.
+    - title: Bundle Video Agent into Enterprise
+      description: >
+        If Video Agent is needed, negotiating it into the Enterprise contract
+        bundle is typically more cost-effective than adding it as a standalone
+        per-seat add-on.
+    - title: Monitor AI video consumption
+      description: >
+        Track AI video generation volume against contract entitlements to avoid
+        overages or underutilization of negotiated capacity.

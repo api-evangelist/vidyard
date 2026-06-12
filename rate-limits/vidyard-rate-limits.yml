@@ -1,0 +1,72 @@
+specificationVersion: "0.1"
+name: Vidyard API Rate Limits
+description: >
+  Vidyard does not publicly document specific numeric rate limits for its APIs.
+  The Dashboard API, Video Agent API, and Analytics Webhook API are all
+  Enterprise-tier features. Rate limit thresholds, throttling behavior, and
+  retry guidance are available by contacting Vidyard Enterprise support.
+  Authentication tokens are org-scoped Bearer tokens passed via the auth_token
+  parameter; tokens expire and must be refreshed per Vidyard's token management
+  guidance.
+url: https://developer.vidyard.com/
+created: "2026-06-12"
+modified: "2026-06-12"
+
+authentication:
+  type: Bearer Token
+  description: >
+    API access uses an organization-scoped Bearer token passed as the
+    auth_token parameter in request bodies or as a query parameter. Tokens
+    are role-based and limit actions to the permissions assigned to the
+    associated role. Token management documentation is at
+    knowledge.vidyard.com/hc/en-us/articles/360009875814.
+  tokenExpiry: contact-sales
+  tokenUrl: https://knowledge.vidyard.com/hc/en-us/articles/360009875814-How-to-access-your-Vidyard-API-tokens
+
+limits:
+  - api: Dashboard API
+    tier: Enterprise
+    requestsPerMinute: undocumented
+    requestsPerHour: undocumented
+    requestsPerDay: undocumented
+    burstLimit: undocumented
+    notes: >
+      Specific rate limit values are not publicly documented. Contact
+      Vidyard Enterprise support at support@vidyard.com for limit details.
+
+  - api: Video Agent API
+    tier: Enterprise
+    requestsPerMinute: undocumented
+    requestsPerHour: undocumented
+    requestsPerDay: undocumented
+    burstLimit: undocumented
+    notes: >
+      Video generation is a resource-intensive operation. Practical throughput
+      depends on campaign configuration and account tier. Contact Vidyard
+      for guidance on expected limits.
+
+  - api: Analytics Webhook API
+    tier: Enterprise
+    requestsPerMinute: undocumented
+    requestsPerHour: undocumented
+    requestsPerDay: undocumented
+    burstLimit: undocumented
+    notes: >
+      Webhook delivery rates are driven by viewer event volume. Subscription
+      management endpoint rate limits are not publicly documented.
+
+errorHandling:
+  rateLimitExceeded: 429
+  unauthorized: 401
+  forbidden: 403
+  badRequest: 400
+  retryAfterHeader: undocumented
+  notes: >
+    The Dashboard API returns standard HTTP error codes (400, 401, 403, 404,
+    406, 422) for request errors. Retry-After header usage is not
+    documented publicly.
+
+contact:
+  support: support@vidyard.com
+  statusPage: https://status.vidyard.com/
+  apiStatusComponent: https://status.vidyard.com/public-api

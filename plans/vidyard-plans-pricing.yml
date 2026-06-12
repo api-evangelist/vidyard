@@ -1,0 +1,96 @@
+specificationVersion: "0.1"
+name: Vidyard Plans and Pricing
+description: >
+  Vidyard offers four tiers of service — Free, Starter, Teams, and Enterprise —
+  targeting individuals through large sales and marketing organizations. API and
+  advanced integration access is reserved for Enterprise customers. Starter and
+  Teams plans provide product access and analytics but limit or exclude
+  programmatic API use.
+url: https://www.vidyard.com/pricing/
+created: "2026-06-12"
+modified: "2026-06-12"
+
+plans:
+  - name: Free
+    description: >
+      Entry-level plan for individuals exploring Vidyard. Allows limited monthly
+      video creation, AI-generated videos, custom AI avatars, and basic editing
+      tools. No credit card required.
+    price: 0
+    currency: USD
+    billingPeriod: monthly
+    features:
+      - 5 videos per month recording limit
+      - 15 AI videos included
+      - 3 custom AI avatars
+      - Stock avatars
+      - Basic video editing tools
+      - Limited integrations
+      - Limited automated video creation
+    apiAccess: false
+    rateLimits: none
+
+  - name: Starter
+    description: >
+      For individual sales reps and marketers who need unlimited recording,
+      full video analytics, branded sharing pages, and folder management.
+      Does not include CRM/MAP integrations or API access.
+    price: 59
+    currency: USD
+    billingPeriod: monthly
+    unit: seat
+    features:
+      - Unlimited video recording
+      - Full video analytics
+      - Team performance analytics
+      - Branded sharing page
+      - Password-protected videos
+      - Folder management
+      - Custom backgrounds
+    apiAccess: false
+    rateLimits: none
+
+  - name: Teams
+    description: >
+      For teams of five or more requiring CRM and MAP integrations, advanced
+      analytics, customizable CTAs, and video captions. Pricing is custom and
+      invoice-based. API access is not included.
+    price: custom
+    currency: USD
+    billingPeriod: monthly
+    unit: user
+    features:
+      - All Starter features
+      - CRM/MAP integrations
+      - Advanced team analytics
+      - Advanced branded sharing pages
+      - Fully customizable CTAs
+      - Video captions
+    apiAccess: false
+    rateLimits: none
+    notes: Best for 5+ users. Invoice-based billing.
+
+  - name: Enterprise
+    description: >
+      For large organizations needing unlimited integrations, SSO user
+      management, secure playback restrictions, custom permissions, and full
+      API and ingestion-based integration access for programmatic video
+      management at scale.
+    price: custom
+    currency: USD
+    billingPeriod: annual
+    unit: user
+    features:
+      - All Teams features
+      - Unlimited integrations
+      - SSO user management
+      - Secure playback restrictions
+      - Custom permissions and security options
+      - API and ingestion-based integrations
+      - Programmatic video library management
+      - Dashboard API access
+      - Video Agent API access
+      - Analytics Webhook API access
+    apiAccess: true
+    rateLimits: contact-sales
+    notes: Custom pricing. Contact Vidyard sales for a quote.

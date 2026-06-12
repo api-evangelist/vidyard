@@ -1,0 +1,112 @@
+aid: vidyard
+name: Vidyard
+description: >
+  Vidyard is a video platform for business that provides REST APIs for managing
+  video libraries, generating sharing links, tracking viewer analytics, and
+  integrating with CRM and marketing tools. The Dashboard API enables programmatic
+  control over players, videos, chapters, organizations, teams, users, events,
+  campaigns, webhooks, and more. The Video Agent API supports AI-powered
+  personalized video creation workflows, and the Analytics Webhook API streams
+  real-time viewer data to external systems.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/vidyard/refs/heads/main/apis.yml
+created: "2026-06-12"
+modified: "2026-06-12"
+specificationVersion: "0.19"
+tags:
+  - Video
+  - Video Platform
+  - Video Analytics
+  - Video Sharing
+  - Sales Video
+  - CRM Integration
+  - Marketing
+  - AI Video
+  - Webhooks
+
+apis:
+  - name: Vidyard Dashboard API
+    description: >
+      The Vidyard Dashboard API provides full CRUD access to your Vidyard
+      account assets including players, videos, chapters, organizations, teams,
+      users, roles, events, campaigns, tags, webhooks, embeds, access managers,
+      attributes, features, and captions. Authentication is via an org-scoped
+      Bearer token passed as auth_token.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://developer.vidyard.com/
+    baseURL: https://api.vidyard.com/dashboard/v1/
+    tags:
+      - Video Management
+      - Players
+      - Analytics
+      - Webhooks
+    properties:
+      - type: Documentation
+        url: https://developer.vidyard.com/
+      - type: OpenAPI
+        url: https://developer.vidyard.com/apidoc/api_videos/create.html
+
+  - name: Vidyard Video Agent API
+    description: >
+      The Video Agent API enables integration of Vidyard's AI-powered video
+      generation into any application or custom workflow. It allows triggering
+      personalized video creation of Vidyard campaigns programmatically and
+      supports webhook-based delivery notifications.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
+    baseURL: https://api.vidyard.com/
+    tags:
+      - AI Video
+      - Video Generation
+      - Personalization
+      - Automation
+    properties:
+      - type: Documentation
+        url: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
+
+  - name: Vidyard Analytics Webhook API
+    description: >
+      The Analytics Webhook API allows subscribing to and streaming video view
+      data from Vidyard to an external application. View events are delivered
+      as HTTP POST requests in JSON format to a configured endpoint whenever
+      viewers engage with videos.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook
+    baseURL: https://analytics-api.vidyard.com/v1/
+    tags:
+      - Analytics
+      - Webhooks
+      - Viewer Data
+      - Real-Time
+    properties:
+      - type: Documentation
+        url: https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook
+
+common:
+  - type: Website
+    url: https://www.vidyard.com/
+  - type: Documentation
+    url: https://developer.vidyard.com/
+  - type: GitHub
+    url: https://github.com/Vidyard
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/vidyard
+  - type: Blog
+    url: https://www.vidyard.com/blog/
+  - type: Pricing
+    url: https://www.vidyard.com/pricing/
+  - type: StatusPage
+    url: https://status.vidyard.com/
+  - type: X
+    url: https://x.com/vidyard
+  - type: Plans
+    url: plans/vidyard-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/vidyard-rate-limits.yml
+  - type: FinOps
+    url: finops/vidyard-finops.yml
+
+maintainers:
+  - name: Kin Lane
+    email: kin@apievangelist.com
