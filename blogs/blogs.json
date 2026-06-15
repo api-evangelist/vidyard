@@ -1,7 +1,7 @@
 {
   "url": "https://www.vidyard.com/blog/",
   "rss": "https://www.vidyard.com/feed/",
-  "fetched": "2026-06-12",
+  "fetched": "2026-06-14T20:42:17Z",
   "posts": [
     {
       "title": "Turning HubSpot signals into pipeline: A smarter approach to personalized outreach",
@@ -33,5 +33,16 @@
       "author": "Zoe Janssens",
       "published": "2026-05-04"
     }
-  ]
+  ],
+  "repo": "vidyard",
+  "feeds": [
+    {
+      "source": "https://www.linkedin.com/company/vidyard",
+      "feed_url": "https://www.linkedin.com/company/vidyard",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0
 }
