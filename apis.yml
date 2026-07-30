@@ -9,7 +9,19 @@ description: >
   personalized video creation workflows, and the Analytics Webhook API streams
   real-time viewer data to external systems.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Freemium
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/vidyard.png
 url: https://raw.githubusercontent.com/api-evangelist/vidyard/refs/heads/main/apis.yml
 created: "2026-06-12"
 modified: "2026-06-12"
