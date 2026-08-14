@@ -24,7 +24,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/vidyard.png
 url: https://raw.githubusercontent.com/api-evangelist/vidyard/refs/heads/main/apis.yml
 created: "2026-06-12"
-modified: "2026-06-12"
+modified: "2026-08-13"
 specificationVersion: "0.19"
 tags:
   - Video
@@ -56,8 +56,14 @@ apis:
     properties:
       - type: Documentation
         url: https://developer.vidyard.com/
-      - type: OpenAPI
-        url: https://developer.vidyard.com/apidoc/api_videos/create.html
+      - type: APIReference
+        url: https://developer.vidyard.com/
+      - type: GettingStarted
+        url: https://knowledge.vidyard.com/hc/en-us/articles/360010000133-How-to-use-the-Vidyard-Dashboard-API
+      - type: DataModel
+        url: data-model/vidyard-data-model.yml
+      - type: ErrorCatalog
+        url: errors/vidyard-problem-types.yml
 
   - name: Vidyard Video Agent API
     description: >
@@ -76,6 +82,10 @@ apis:
     properties:
       - type: Documentation
         url: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
+      - type: RateLimits
+        url: rate-limits/vidyard-rate-limits.yml
+      - type: Webhooks
+        url: asyncapi/vidyard-webhooks.yml
 
   - name: Vidyard Analytics Webhook API
     description: >
@@ -94,6 +104,10 @@ apis:
     properties:
       - type: Documentation
         url: https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook
+      - type: Webhooks
+        url: asyncapi/vidyard-webhooks.yml
+      - type: Postman
+        url: https://vy-docs.s3.amazonaws.com/postman/VidyardAnalyticsWebhooks.postman_collection.json
 
 common:
   - type: TrustCenter
@@ -125,6 +139,80 @@ common:
   - type: FinOps
     url: finops/vidyard-finops.yml
 
+  # --- Agent surfaces ---
+  - type: AgentCard
+    url: a2a/vidyard-a2a.yml
+  - type: LLMsTxt
+    url: llms/vidyard-llms.txt
+  - type: WellKnown
+    url: well-known/vidyard-well-known.yml
+
+  # --- Contract + runtime semantics ---
+  - type: Authentication
+    url: authentication/vidyard-authentication.yml
+  - type: ErrorCatalog
+    url: errors/vidyard-problem-types.yml
+  - type: Conventions
+    url: conventions/vidyard-conventions.yml
+  - type: DataModel
+    url: data-model/vidyard-data-model.yml
+  - type: Webhooks
+    url: asyncapi/vidyard-webhooks.yml
+  - type: Conformance
+    url: conformance/vidyard-conformance.yml
+
+  # --- Lifecycle + operations ---
+  - type: Lifecycle
+    url: lifecycle/vidyard-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/vidyard-changelog.yml
+
+  # --- Developer ergonomics ---
+  - type: Packages
+    url: packages/vidyard-packages.yml
+  - type: SDKs
+    url: packages/vidyard-packages.yml
+  - type: CLI
+    url: cli/vidyard-cli.yml
+  - type: Components
+    url: components/vidyard-components.yml
+  - type: Postman
+    url: https://vy-docs.s3.amazonaws.com/postman/VidyardAnalyticsWebhooks.postman_collection.json
+
+  # --- Security + compliance ---
+  - type: Security
+    url: https://www.vidyard.com/security/
+  - type: Compliance
+    url: https://trust.vidyard.com/
+
+  # --- Identity + link properties ---
+  - type: DeveloperPortal
+    url: https://www.vidyard.com/developers/
+  - type: APIReference
+    url: https://developer.vidyard.com/
+  - type: GettingStarted
+    url: https://knowledge.vidyard.com/hc/en-us/articles/360010000133-How-to-use-the-Vidyard-Dashboard-API
+  - type: Support
+    url: https://knowledge.vidyard.com/hc/en-us
+  - type: HelpCenter
+    url: https://knowledge.vidyard.com/hc/en-us
+  - type: GitHubOrganization
+    url: https://github.com/Vidyard
+  - type: SignUp
+    url: https://www.vidyard.com/sign-up-for-free/
+  - type: TermsOfService
+    url: https://www.vidyard.com/legal/
+  - type: PrivacyPolicy
+    url: https://www.vidyard.com/privacy/
+  - type: Integrations
+    url: https://www.vidyard.com/integrations/
+
 maintainers:
   - name: Kin Lane
     email: kin@apievangelist.com
+
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 14
+  pass: local-v1
