@@ -1,14 +1,68 @@
-generated: '2026-07-11'
+generated: '2026-08-13'
 method: searched
 probe: true
 source: https://trust.vidyard.com/
 url: https://trust.vidyard.com/
+http_status: 200
+platform: SafeBase
+legal_entity: Buildscale, Inc d/b/a Vidyard
 certifications:
-- SOC 2
+- SOC 2 Type 2
 - GDPR
+- Microsoft SSPA
+certifications_note: >
+  Read verbatim from the "Compliance and Attestations" block on
+  trust.vidyard.com. Upgraded this pass from the earlier probe's coarser
+  "SOC 2, GDPR" — the trust center specifies SOC 2 TYPE 2 and additionally
+  names Microsoft SSPA (Supplier Security and Privacy Assurance).
+  Not claimed: ISO 27001, PCI DSS, HIPAA and FedRAMP are absent from the list.
+public_disclosures:
+- Responsible Disclosure
+- Application Penetration Testing
+- Secure Development Training
+- Automated Compliance Monitoring
+- Data Loss Prevention (DLP)
+- Event & Audit Log Management
+- Multi-Factor Authentication
+- Audit Logging
+- Amazon Web Services infrastructure
+- BC/DR program
+gated_documents:
+  access_model: SafeBase access request ("Start your security review")
+  items:
+  - Network Diagram
+  - Platform Infrastructure Diagram
+  - Data Flow Diagram (DFD)
+  - Sanitized Executive Policy Summary
+  - Handbook - 2026
+  - Acceptable Use Policy
+  - Backup Policy
+  - Business Continuity Plan (BCP)
+  - Recovery Time Objective / Recovery Point Objective
+  - Risk Assessments
+  - Supply Chain Risk Management
+reviewed_by:
+- Google
+- Slack
+- Zoom
+- Gong
+- Microsoft
+- Salesloft
+- Theta Lake
+- LinkedIn
+- Zapier
+- Apollo.io
+- Pipedrive
+- Adobe Marketo Engage
+- Salesforce
+- HubSpot
+- Shopify.com
 evidence:
 - source: https://trust.vidyard.com/
+  http_status: 200
   keywords:
-  - soc 2
-  - trust center
+  - soc 2 type 2
   - gdpr
+  - microsoft sspa
+  - trust center
+  - responsible disclosure

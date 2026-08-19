@@ -1,0 +1,121 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.vidyard.com/
+docs: https://developer.vidyard.com/
+
+versioning:
+  scheme: uri-path
+  current: v1
+  observed: [v1, "v1.1"]
+  policy_url: null
+  policy_published: false
+  note: >
+    Version lives in the path (/dashboard/v1/...). A single v1.1 operation
+    exists — GET /dashboard/v1.1/oembed — introduced to serve the responsive
+    embed code alongside the v1 legacy form. Vidyard publishes no version
+    policy, no supported-version window, and no migration guidance.
+
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  mechanism: >
+    Deprecation is communicated ONLY as a DEPRECATED badge rendered next to an
+    operation in the HTML reference at developer.vidyard.com. There is no
+    RFC 8594 Sunset header, no Deprecation header, no removal date on any
+    deprecated operation, and no policy page stating how long a deprecated
+    operation remains callable.
+  note: >
+    No `Deprecation` common[] pointer is emitted for Vidyard: badges on
+    individual operations are a deprecation SIGNAL, not a deprecation POLICY,
+    and the scoring check reads a published policy.
+
+deprecated_operations:
+  count: 9
+  total_operations: 131
+  percent: 6.9
+  source: https://developer.vidyard.com/ (DEPRECATED badges in the reference)
+  operations:
+    - method: PATCH
+      path: /dashboard/v1/videos/:id
+      summary: Update a video
+      replacement: >
+        The reference steers callers to the player endpoints; POST
+        /dashboard/v1/videos warns that creating a video also auto-creates an
+        associated player and recommends using the player endpoint instead.
+    - method: DELETE
+      path: /dashboard/v1/videos/:id
+      summary: Delete a video
+    - method: GET
+      path: /dashboard/v1/videos/:video_id/tags
+      summary: Get all tags for a Video
+    - method: PATCH
+      path: /dashboard/v1/videos/:video_id/tags
+      summary: Update a Video's tags
+    - method: PATCH
+      path: /dashboard/v1/videos/:video_id/selected_thumbnail
+      summary: Set a video's selected thumbnail
+    - method: PATCH
+      path: "/dashboard/v1/players/uuid=:uuid/selected_thumbnails"
+      summary: Sets the player thumbnails
+      note: >
+        Reference also lists the sibling form
+        /dashboard/v1/players/:player_id/selected_thumbnails
+    - method: GET
+      path: /dashboard/v1/thumbnails/:id
+      summary: Get a single Thumbnail
+    - method: GET
+      path: "/dashboard/v1/organizations/:organization_id/features/unique_name=:unique_name"
+      summary: Get a feature within an organization
+    - method: POST
+      path: /dashboard/v1/players/:id/youtube_push
+      summary: Push a player to YouTube
+
+legacy_surfaces:
+  - name: Player API (Legacy)
+    status: superseded
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360009871054-Using-the-Vidyard-Player-API-Legacy
+    note: Retained for players embedded with pre-V4 embed codes.
+  - name: oEmbed v1
+    status: legacy
+    path: /dashboard/v1/oembed
+    note: Returns the legacy embed code; v1.1 returns the responsive one.
+
+status_page:
+  url: https://status.vidyard.com/
+  http_status: 200
+  api_component: https://status.vidyard.com/public-api
+  machine_readable: false
+  note: >
+    The status page is live and publicly reachable and carries a dedicated
+    Public API component. It is NOT an Atlassian Statuspage — the conventional
+    /api/v2/summary.json endpoint returns 403 AccessDenied, so uptime history
+    cannot be read programmatically.
+
+sla:
+  url: null
+  uptime_target: null
+  published: false
+  note: >
+    No public SLA or uptime commitment. Vidyard's trust center exposes Recovery
+    Time Objective and Recovery Point Objective entries, but both sit behind
+    the SafeBase access-request gate.
+
+changelog:
+  url: https://www.vidyard.com/product-updates/
+  cross_reference: changelog/vidyard-changelog.yml
+
+support:
+  email: support@vidyard.com
+  help_center: https://knowledge.vidyard.com/hc/en-us
+  hours: 24x5 (per the knowledge-base support banner)
+
+summary:
+  versioning_policy_published: false
+  deprecation_policy_published: false
+  sunset_header: false
+  deprecated_operation_count: 9
+  status_page: true
+  sla_published: false
+  changelog: true

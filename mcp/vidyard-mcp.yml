@@ -1,0 +1,105 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: https://developer.vidyard.com/
+
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: probed
+  note: >
+    Vidyard ships NO MCP server, hosted or local. Probed 2026-08-13:
+    mcp.vidyard.com does not resolve (NXDOMAIN, confirmed with dig — no A
+    record); POST tools/list to https://api.vidyard.com/mcp returns 404 and to
+    https://www.vidyard.com/mcp returns 404 with the marketing SPA shell. No
+    @vidyard MCP package exists on npm, and neither the docs nor the GitHub org
+    mention MCP. Because nobody ships a server, NO `MCPServer` pointer is wired
+    into apis.yml — the pointer would assert an agent surface that does not
+    exist. The tools below are a DERIVED CANDIDATE design only.
+
+candidate_note: >
+  A candidate tool set derived from the marquee flows in Vidyard's published
+  131-operation Dashboard API reference. Every tool below names the real
+  method + path it would call, transcribed verbatim from
+  developer.vidyard.com. These are a proposal for Vidyard, not a description
+  of anything callable today. Input schemas are NOT enumerated: Vidyard
+  publishes no OpenAPI, so parameter contracts would have to be scraped from
+  HTML parameter tables rather than inherited from a spec — which is exactly
+  why no tool crosswalk artifact is emitted for this provider.
+
+tools:
+  - name: list_videos
+    description: List videos in the token's folder, with search, sorting and paging.
+    source_operation: GET /dashboard/v1/videos
+  - name: get_video
+    description: Retrieve a single video by id.
+    source_operation: GET /dashboard/v1/videos/:id
+  - name: create_video
+    description: >
+      Create a video from an upload URL. NOTE — this also auto-creates an
+      associated player; the reference recommends creating a player instead.
+    source_operation: POST /dashboard/v1/videos
+  - name: get_video_encoding_status
+    description: Check the encoding status of a video.
+    source_operation: GET /dashboard/v1/videos/:id/encoding_status
+  - name: get_video_files
+    description: Get signed file URLs for a video.
+    source_operation: GET /dashboard/v1/videos/:id/files
+  - name: list_players
+    description: List players, optionally including sub-folders.
+    source_operation: GET /dashboard/v1/players
+  - name: search_players
+    description: Search players by name and associated tags.
+    source_operation: GET /dashboard/v1/players/search
+  - name: create_player
+    description: Create a player — the recommended way to add a video.
+    source_operation: POST /dashboard/v1/players
+  - name: get_player_embed_codes
+    description: Retrieve embed codes for a player.
+    source_operation: GET /dashboard/v1/players/:player_id/embed_codes
+  - name: list_video_captions
+    description: List caption tracks on a video.
+    source_operation: GET /dashboard/v1/videos/:video_id/captions
+  - name: publish_video_caption
+    description: Publish a drafted caption track.
+    source_operation: PATCH /dashboard/v1/captions/:id/publish
+  - name: list_tags
+    description: List tags in the account.
+    source_operation: GET /dashboard/v1/tags
+  - name: list_events
+    description: List webinar/live events for an organization.
+    source_operation: GET /dashboard/v1/organizations/:id/events
+  - name: register_analytics_webhook
+    description: Register an analytics webhook on an organization.
+    source_operation: POST /dashboard/v1/organizations/:organization_id/webhooks/analytics
+  - name: get_allotments
+    description: Fetch allotment usage and limits for an account.
+    source_operation: GET /dashboard/v1/organizations/:organization_id/allotments
+  - name: submit_gdpr_request
+    description: Submit a GDPR data-subject request on behalf of an account.
+    source_operation: POST /dashboard/v1/gdpr_requests
+
+blockers:
+  - >
+    No OpenAPI to generate a server from — an MCP implementation would have to
+    hand-transcribe 131 operations out of apipie HTML.
+  - >
+    auth_token is a static, folder-scoped, non-expiring credential passed in
+    the query string. There is no OAuth flow, so an MCP client has no way to
+    obtain scoped, revocable, user-delegated access.
+  - >
+    No idempotency contract, so retry-prone agent traffic risks duplicate
+    videos and duplicate Video Agent generations.
+  - >
+    No documented error body, so a tool cannot surface a structured failure.
+
+agent_surface_today:
+  a2a_agent_card: https://www.vidyard.com/.well-known/agent-card.json
+  llms_txt: https://www.vidyard.com/llms.txt
+  note: >
+    Vidyard's only real agent-facing artifacts today are the A2A agent card and
+    llms.txt — both descriptive. Neither is callable: the agent card's url is a
+    contact page and there is no tool endpoint of any kind.

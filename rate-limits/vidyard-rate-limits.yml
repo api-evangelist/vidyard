@@ -1,72 +1,124 @@
 specificationVersion: "0.1"
+generated: '2026-08-13'
+method: searched
+source: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
 name: Vidyard API Rate Limits
 description: >
-  Vidyard does not publicly document specific numeric rate limits for its APIs.
-  The Dashboard API, Video Agent API, and Analytics Webhook API are all
-  Enterprise-tier features. Rate limit thresholds, throttling behavior, and
-  retry guidance are available by contacting Vidyard Enterprise support.
-  Authentication tokens are org-scoped Bearer tokens passed via the auth_token
-  parameter; tokens expire and must be refreshed per Vidyard's token management
-  guidance.
-url: https://developer.vidyard.com/
+  Vidyard publishes hard numeric rate limits for exactly one of its three APIs.
+  The Video Agent API documents 1,000 calls per minute and 25,000 per day under
+  an explicit "API Limits" heading. The Dashboard API and the Analytics Webhook
+  API publish no limits at all — no numbers, no response headers, and no 429 in
+  the error table on any of the 131 documented Dashboard operations. What the
+  platform returns when the Video Agent limits ARE exceeded is also unstated.
+url: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
 created: "2026-06-12"
-modified: "2026-06-12"
+modified: "2026-08-13"
 
 authentication:
-  type: Bearer Token
+  type: apiKey
+  parameter: auth_token
+  placement: [query, body]
   description: >
-    API access uses an organization-scoped Bearer token passed as the
-    auth_token parameter in request bodies or as a query parameter. Tokens
-    are role-based and limit actions to the permissions assigned to the
-    associated role. Token management documentation is at
-    knowledge.vidyard.com/hc/en-us/articles/360009875814.
-  tokenExpiry: contact-sales
+    A static, folder-scoped, role-based API token passed as the auth_token
+    query parameter or body attribute. No documented expiry or rotation.
   tokenUrl: https://knowledge.vidyard.com/hc/en-us/articles/360009875814-How-to-access-your-Vidyard-API-tokens
+  cross_reference: authentication/vidyard-authentication.yml
 
 limits:
-  - api: Dashboard API
-    tier: Enterprise
-    requestsPerMinute: undocumented
-    requestsPerHour: undocumented
-    requestsPerDay: undocumented
-    burstLimit: undocumented
+  - api: Vidyard Video Agent API
+    scope: per-account
+    published: true
+    source: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
+    quotes: "There is a limit on the number of Video Agent API calls that can be processed in certain time periods. Per day - 25,000. Per minute - 1,000."
+    windows:
+      - window: 1m
+        limit: 1000
+        unit: requests
+      - window: 1d
+        limit: 25000
+        unit: requests
+    burst: undocumented
+    status_on_exhaustion: undocumented
+    response_headers: undocumented
+    retry_after: undocumented
     notes: >
-      Specific rate limit values are not publicly documented. Contact
-      Vidyard Enterprise support at support@vidyard.com for limit details.
+      The only numeric limits Vidyard publishes anywhere. Note the daily cap of
+      25,000 is well below 1,000/min sustained (1.44M/day), so the daily quota
+      is the real constraint — it is exhausted by 25 minutes at peak rate.
 
-  - api: Video Agent API
-    tier: Enterprise
-    requestsPerMinute: undocumented
-    requestsPerHour: undocumented
-    requestsPerDay: undocumented
-    burstLimit: undocumented
+  - api: Vidyard Dashboard API
+    scope: undocumented
+    published: false
+    limit: null
+    window: null
+    burst: null
+    status_on_exhaustion: undocumented
+    response_headers: undocumented
+    retry_after: undocumented
     notes: >
-      Video generation is a resource-intensive operation. Practical throughput
-      depends on campaign configuration and account tier. Contact Vidyard
-      for guidance on expected limits.
+      No limits documented. The fixed error table repeated on all 131 operation
+      pages at developer.vidyard.com lists 400, 401, 403, 404, 406 and 422 —
+      429 is absent entirely, so throttling behaviour is unspecified. The only
+      quota-shaped surface is the allotments resource
+      (GET /dashboard/v1/organizations/:organization_id/allotments), which
+      reports account usage and limits for FEATURES, not for API calls.
 
-  - api: Analytics Webhook API
-    tier: Enterprise
-    requestsPerMinute: undocumented
-    requestsPerHour: undocumented
-    requestsPerDay: undocumented
-    burstLimit: undocumented
+  - api: Vidyard Analytics Webhook API
+    scope: undocumented
+    published: false
+    limit: null
+    window: null
+    burst: null
+    status_on_exhaustion: undocumented
+    response_headers: undocumented
+    retry_after: undocumented
     notes: >
-      Webhook delivery rates are driven by viewer event volume. Subscription
-      management endpoint rate limits are not publicly documented.
+      No limits documented for the subscription-management endpoints on
+      analytics-api.vidyard.com. Outbound delivery volume is driven by viewer
+      event traffic and is not rate-described; note that a single full view
+      emits five separate `view` payloads (0/25/50/75/100 milestones), so
+      inbound volume at the receiver scales at 5x the view count.
+
+response_headers:
+  documented: false
+  x_ratelimit: false
+  ratelimit_standard: false
+  retry_after: false
+  note: >
+    Vidyard documents NO rate-limit response headers of any kind — neither the
+    X-RateLimit-* convention nor the RFC-draft RateLimit-* fields nor
+    Retry-After. An agent has no runtime signal for remaining quota and must
+    treat the published Video Agent numbers as the only budget information
+    available. Headers were not observed live because every Vidyard API
+    endpoint requires a token; the 406 returned by an unauthenticated
+    GET https://api.vidyard.com/dashboard/v1 carried no rate-limit headers.
 
 errorHandling:
-  rateLimitExceeded: 429
+  rateLimitExceeded: undocumented
   unauthorized: 401
   forbidden: 403
   badRequest: 400
+  notAcceptable: 406
+  unprocessable: 422
+  notFound: 404
   retryAfterHeader: undocumented
-  notes: >
-    The Dashboard API returns standard HTTP error codes (400, 401, 403, 404,
-    406, 422) for request errors. Retry-After header usage is not
-    documented publicly.
+  cross_reference: errors/vidyard-problem-types.yml
+
+commercial_gate:
+  note: >
+    Vidyard's pricing page reserves API and ingestion-based integrations for
+    the Enterprise tier, while the knowledge-base "Who Can Use This Feature?"
+    banners list all four tiers subject to the Edit API tokens permission.
+    Effective access is sales-gated.
+  see: plans/vidyard-plans-pricing.yml
 
 contact:
   support: support@vidyard.com
   statusPage: https://status.vidyard.com/
   apiStatusComponent: https://status.vidyard.com/public-api
+
+summary:
+  limit_count: 2
+  apis_with_published_limits: 1
+  apis_total: 3
+  headers_published: false

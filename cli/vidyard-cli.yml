@@ -1,0 +1,43 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.npmjs.com/package/@vidyard/vy-cli
+note: >
+  Vidyard has no CLI for its REST APIs. The only first-party command-line tool
+  ever published is @vidyard/vy-cli, a CTA-development helper last released
+  2021-05-13 and referenced from no current Vidyard documentation page. It is
+  recorded here as a found-but-dormant surface, not as a working developer tool.
+
+status: dormant
+
+cli:
+  name: vy-cli
+  package: "@vidyard/vy-cli"
+  registry: npm
+  url: https://www.npmjs.com/package/@vidyard/vy-cli
+  version: 1.1.0
+  published: '2021-05-13'
+  license: MIT
+  description: Vidyard CLI to speed up CTA development.
+  official: true
+  install:
+    - npm install -g "@vidyard/vy-cli"
+  scope: >
+    Call-to-action (CTA) template development for the Vidyard player. Does not
+    wrap the Dashboard API, the Video Agent API, or the Analytics Webhook API.
+  source_repository: null
+  source_note: >
+    package.json declares git+https://github.com/Development/vy-cli.git, a path
+    that is not owned by Vidyard and does not resolve. No public source exists,
+    so the command surface below cannot be enumerated from a repository.
+  commands: []
+  commands_note: >
+    NOT DOCUMENTED. Vidyard publishes no man page, no README on any reachable
+    host, and no docs-site page for this CLI. The npm description is the entire
+    published contract. No command list is recorded here rather than inferring
+    one — an invented command surface would be worse than an empty one.
+
+gaps:
+  - No CLI covers the Dashboard API's 131 documented operations.
+  - No CLI covers Video Agent campaign triggering.
+  - No CLI covers analytics webhook subscription management.
+  - Last release predates the Video Agent API (announced December 2025) by over four years.

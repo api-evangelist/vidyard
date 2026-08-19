@@ -1,0 +1,197 @@
+generated: '2026-08-13'
+method: derived
+source: https://developer.vidyard.com/
+derivation: >
+  Derived from the 131 published operations across 33 resources in the Vidyard
+  Dashboard API reference. Relationships were read from URL path nesting
+  (/parent/:parent_id/child implies parent has_many child) and from the
+  identifier fields carried in the documented request/response examples and the
+  analytics webhook payload glossary. NO OpenAPI exists for Vidyard, so this
+  graph is derived from the published HTML reference rather than from schema
+  $refs — entity attributes are therefore partial, covering only the fields
+  Vidyard shows in its examples and parameter tables.
+
+root: organization
+
+identifier_conventions:
+  numeric_id: Sequential integer primary key on most resources.
+  uuid: >
+    22-character opaque public identifier on video, player and visitor. This is
+    what appears in share URLs, embed codes and every webhook payload.
+  dual_lookup: >
+    Player and attribute operations publish both /:id and /uuid=:uuid path
+    forms for the same resource.
+  campaign_id: RFC 4122 UUID, Video Agent surface only.
+
+entities:
+
+  - name: organization
+    description: >
+      A FOLDER in the Vidyard account tree, not a company. This is the central
+      entity — it is the authorization boundary (API tokens are folder-scoped),
+      the inheritance boundary (subfolders inherit webhooks), and the analytics
+      grouping key. The top-level folder's id is surfaced as account_id.
+    identifier: organization_id
+    hierarchical: true
+    hierarchy_note: >
+      Self-referential — organizations nest arbitrarily deep. Webhook payloads
+      distinguish organization_id (folder where the webhook is configured) from
+      player_organization_id (folder where the video actually lives), which is
+      the clearest published evidence of the tree.
+    operations: [show, update, accounts, index]
+
+  - name: player
+    description: >
+      The embeddable playback unit and the recommended primary object. Creating
+      a video auto-creates an associated player with player_type
+      video_facade; the reference explicitly recommends creating players rather
+      than videos. A player may contain multiple videos.
+    identifier: [id, uuid]
+    attributes: [uuid, name, player_type, created_at, updated_at]
+    operations_count: 22
+
+  - name: video
+    description: >
+      The underlying media asset with its encoding pipeline and distribution
+      targets. Several of its direct mutation operations are deprecated in
+      favour of the player surface.
+    identifier: [id, uuid]
+    attributes:
+      - name
+      - uuid
+      - upload_url
+      - description
+      - notes
+      - audio_gain
+      - webhook_url
+      - sync
+      - status
+      - error_message
+      - approver
+      - created_at
+      - updated_at
+    attribute_note: >
+      Transcribed from the POST /dashboard/v1/videos request and 201 response
+      examples plus its Params table. created_at/updated_at are Unix epoch
+      integers here, unlike the ISO 8601 timestamps in webhook payloads.
+    operations_count: 13
+
+  - name: chapter
+    description: A titled segment within a player's video sequence.
+    operations: [create, update, show, destroy]
+
+  - name: caption
+    description: >
+      A caption/subtitle track on a video, with its own draft/publish
+      lifecycle and a separate content resource.
+    lifecycle: [create, draft, publish, content_status, content, destroy]
+
+  - name: thumbnail
+    description: Still frames generated for a video; one is the selected thumbnail.
+
+  - name: tag
+    description: Free-form labels applied to videos and players; searchable via the query parameter.
+
+  - name: attribute
+    description: >
+      Custom metadata key/value pairs. Exists in two flavours — default
+      attributes (account-wide) and player attributes (per player).
+
+  - name: event
+    description: >
+      A webinar/live-event object owned by an organization, with its own
+      search, duplicate and owner-metadata operations. Joined to players.
+    operations_count: 10
+
+  - name: campaign
+    description: >
+      A Video Agent personalization campaign holding the script and its dynamic
+      variables. Referenced by campaign_id (RFC 4122 UUID) on the Video Agent
+      API and in share/match URLs.
+    surface: Video Agent API
+
+  - name: hub
+    description: A public content hub with categories and a sitemap.
+
+  - name: user
+    description: An account member; carries a role and belongs to teams.
+
+  - name: role
+    description: >
+      Permission set that bounds what a user — and therefore that user's API
+      token — can do.
+
+  - name: team
+    description: >
+      Grouping that carries the permissions gating API access, specifically
+      "Edit API tokens" and "Edit Integrations".
+
+  - name: webhook
+    description: >
+      A registered callback. Two kinds — analytics and players — both
+      registered under an organization.
+    cross_reference: asyncapi/vidyard-webhooks.yml
+
+  - name: embed_code
+    description: Generated markup for embedding a player, in legacy and responsive forms.
+
+  - name: access_manager
+    description: Player access-control policy.
+
+  - name: feature
+    description: Entitlement flag on an organization, with usages and allotments.
+
+  - name: allotment
+    description: Usage quota and limit counters for an account.
+
+  - name: visitor
+    description: >
+      An anonymous viewer keyed by visitor_vidyard_uuid, promoted to an
+      identified viewer (email) via the identified_view event.
+    surface: Analytics Webhook
+
+relationships:
+  - {from: organization, to: organization, type: has_many, via: parent folder, note: Self-referential folder tree}
+  - {from: organization, to: player, type: has_many, via: organization_id}
+  - {from: organization, to: event, type: has_many, via: organization_id}
+  - {from: organization, to: webhook, type: has_many, via: organization_id}
+  - {from: organization, to: feature, type: has_many, via: organization_id}
+  - {from: organization, to: allotment, type: has_many, via: organization_id}
+  - {from: player, to: video, type: has_many, via: player_id}
+  - {from: player, to: embed_code, type: has_many, via: player_id}
+  - {from: player, to: download_link, type: has_many, via: player_id}
+  - {from: player, to: tag, type: has_many, via: player_id}
+  - {from: player, to: attribute, type: has_many, via: player_id}
+  - {from: player, to: access_code, type: has_many, via: player_id}
+  - {from: player, to: event, type: has_many, via: event_joins}
+  - {from: player, to: thumbnail, type: has_many, via: selected_thumbnails}
+  - {from: video, to: chapter, type: has_many, via: video_id}
+  - {from: video, to: caption, type: has_many, via: video_id}
+  - {from: video, to: thumbnail, type: has_many, via: video_id}
+  - {from: video, to: tag, type: has_many, via: video_id, note: DEPRECATED operations}
+  - {from: video, to: file, type: has_many, via: video_id, note: Signed file URLs}
+  - {from: caption, to: caption_content, type: has_one, via: caption_id}
+  - {from: hub, to: hub_category, type: has_many, via: hub_id}
+  - {from: role, to: user, type: has_many, via: role_id}
+  - {from: team, to: user, type: has_many, via: team_users}
+  - {from: user, to: role, type: belongs_to, via: role_id}
+  - {from: feature, to: usage, type: has_many, via: feature_id}
+  - {from: feature, to: allotment, type: has_many, via: feature_id}
+  - {from: campaign, to: video, type: has_many, via: campaign_id, note: Video Agent generated videos}
+  - {from: visitor, to: player, type: has_many, via: player_load_id, note: Viewing sessions, Analytics Webhook only}
+
+distribution_targets:
+  description: >
+    Videos and players can be pushed to external platforms, each with its own
+    operation and status endpoint.
+  targets:
+    - {platform: YouTube, operations: [youtube_push, youtube_push_status, youtube_repush], note: player youtube_push is DEPRECATED}
+    - {platform: Facebook, operations: [facebook_push]}
+
+summary:
+  entity_count: 21
+  relationship_count: 28
+  operation_count: 131
+  resource_count: 33
+  source_spec: null
+  subway_render: null

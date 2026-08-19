@@ -1,0 +1,113 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://knowledge.vidyard.com/hc/en-us/articles/360019034753-Using-the-Vidyard-Player-API
+  and https://www.npmjs.com/package/@vidyard/embed-code
+note: >
+  Vidyard's strongest and best-documented developer surface is client-side, not
+  server-side: an embeddable video player with a full JavaScript control API.
+  This is where the real engineering investment sits — the embed loader shipped
+  a release in July 2026, while the REST APIs have no SDK at all.
+
+families:
+  - family: Player Embed (Embed V4)
+    description: >
+      The responsive Vidyard player embed. A single async script tag installs
+      the loader, and any <img class="vidyard-player-embed"> element carrying a
+      data-uuid attribute is upgraded in place into a player. Multiple instances
+      of the same player on one page are supported.
+    loader:
+      script: https://play.vidyard.com/embed/v4.js
+      attributes: [async]
+      placement: head
+      snippet: '<script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>'
+    mount:
+      element: img
+      class: vidyard-player-embed
+      snippet: '<img class="vidyard-player-embed" src="https://play.vidyard.com/playerUUID.jpg" data-uuid="playerUUID" data-v="4" data-type="inline" />'
+      data_attributes:
+        - {name: data-uuid, description: The player UUID to render}
+        - {name: data-v, description: Embed code version (4)}
+        - {name: data-type, description: Embed style — inline or lightbox}
+    package:
+      registry: npm
+      name: "@vidyard/embed-code"
+      version: 4.3.25
+      published: '2026-07-28'
+      url: https://www.npmjs.com/package/@vidyard/embed-code
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360019034753-Using-the-Vidyard-Player-API
+
+  - family: Player API (JavaScript control surface)
+    description: >
+      Runtime control of an embedded player from page JavaScript. Because the
+      loader is async, consumers register a window.onVidyardAPI callback and
+      then addReadyListener before touching a player instance.
+    ready_pattern:
+      global: window.onVidyardAPI
+      ready_listener: vidyardEmbed.api.addReadyListener(callback, uuid)
+      note: >
+        The uuid argument is optional — omit it to receive a callback for every
+        player on the page.
+    lookup:
+      - {call: "VidyardV4.api.getPlayersByUUID(uuid)", returns: collection of players with that UUID}
+      - {call: "VidyardV4.players", returns: all players on the page}
+    methods:
+      - {name: play, signature: ".play()", description: Start the player}
+      - {name: pause, signature: ".pause()", description: Pause the player}
+      - {name: resume, signature: ".resume()", description: Resume playback (alias of .play())}
+      - {name: seek, signature: ".seek(position)", description: Move playhead to position, in seconds}
+      - {name: scrubbing, signature: ".scrubbing()", description: "Returns true/false — whether the player is mid-seek; used to distinguish a seek-pause from a real pause"}
+      - {name: setVolume, signature: ".setVolume(volume)", description: Set volume, 0–1}
+      - {name: toggleFullscreen, signature: ".toggleFullscreen()", description: Toggle fullscreen}
+      - {name: playVideoAtIndex, signature: ".playVideoAtIndex(index)", description: "Play a specific video in a multi-video player, 0-indexed (formerly .playChapter)"}
+      - {name: getCurrentVideoIndex, signature: ".getCurrentVideoIndex()", description: "Index of the current video (formerly .getCurrentChapter)"}
+      - {name: enableCaption, signature: ".enableCaption(name, code)", description: "Enable captions, e.g. .enableCaption('Deutsch','de'); defaults to the first caption"}
+      - {name: disableCaption, signature: ".disableCaption(name, code)", description: Disable captions; defaults to all showing captions}
+      - {name: currentTime, signature: ".currentTime()", description: Current playhead time in seconds, as a decimal}
+      - {name: setAudioTrack, signature: ".setAudioTrack(audioTrackIndex)", description: Select an audio track by index}
+      - {name: addEvent, signature: ".addEvent(objectOptions)", description: Attach an action/event to the player}
+      - {name: ready, signature: ".ready()", description: Whether the player is ready}
+      - {name: uuid, signature: ".uuid", description: The player's UUID}
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360019034753-Using-the-Vidyard-Player-API
+
+  - family: Player API (Legacy)
+    description: >
+      Superseded control surface retained for players embedded with pre-V4
+      embed codes. Kept documented but not recommended for new work.
+    status: legacy
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360009871054-Using-the-Vidyard-Player-API-Legacy
+
+  - family: Progress events
+    description: >
+      Milestone callbacks that fire JavaScript actions as a viewer reaches
+      percentage points in a video — the client-side counterpart to the
+      server-side `view` webhook milestones (0/25/50/75/100).
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360009870114-Trigger-Javascript-actions-at-video-milestones-with-progress-events
+    cross_reference: asyncapi/vidyard-webhooks.yml
+
+  - family: oEmbed
+    description: >
+      Vidyard implements the oEmbed provider spec, so third-party surfaces can
+      resolve a Vidyard share URL into embed markup without the JS loader.
+      Two operations are published in the Dashboard API reference.
+    operations:
+      - method: GET
+        path: https://api.vidyard.com/dashboard/v1/oembed
+        description: oEmbed response with the LEGACY embed code for a given URL
+      - method: GET
+        path: https://api.vidyard.com/dashboard/v1.1/oembed
+        description: oEmbed response with the RESPONSIVE embed code for a given URL
+    spec: http://oembed.com/
+    docs: https://developer.vidyard.com/
+
+  - family: Secure embed (JWT)
+    description: >
+      Restrict playback of embedded videos to a secure site by signing viewer
+      access with JSON Web Tokens.
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360009997733-Restrict-Vidyard-videos-to-your-secure-site-using-JSON-Web-Tokens
+    cross_reference: authentication/vidyard-authentication.yml
+
+summary:
+  family_count: 6
+  player_api_methods: 16
+  loader_libraries: 1

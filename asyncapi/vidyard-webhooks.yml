@@ -1,0 +1,205 @@
+generated: '2026-08-13'
+method: searched
+source: https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook
+spec_type: null
+spec_note: >
+  Vidyard publishes NO AsyncAPI document. /asyncapi.yaml and /asyncapi.json 404
+  on every host and the GitHub org carries no event schema. What Vidyard does
+  publish is a complete, well-specified webhook catalog with verbatim payload
+  examples and a field glossary — captured here as a Webhooks surface rather
+  than fabricating an AsyncAPI from it.
+
+description: >
+  Vidyard has two distinct event surfaces. The Analytics Webhook is a
+  subscription-managed push of viewer engagement data (three event types),
+  administered either from the Vidyard UI or through a small REST API on
+  analytics-api.vidyard.com. Separately, individual videos and players accept a
+  per-object webhook_url callback for asset-lifecycle notifications, and the
+  Video Agent API accepts a webhook_url for generation-complete callbacks.
+
+surfaces:
+
+  - name: Analytics Webhook
+    kind: subscription
+    transport: HTTP POST
+    content_type: application/json
+    base_url: https://analytics-api.vidyard.com/v1
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook
+    postman: https://vy-docs.s3.amazonaws.com/postman/VidyardAnalyticsWebhooks.postman_collection.json
+    scoping: >
+      A subscription is bound to the folder implied by the API token used to
+      create it. Subfolders inherit the webhook from their immediate parent, so
+      one subscription can cover a whole branch of the folder tree.
+    permissions:
+      ui: Edit Integrations
+      api: Edit API Tokens
+    verification:
+      mechanism: shared secret
+      field: security_key
+      description: >
+        A caller-supplied shared secret echoed on delivery so the receiver can
+        confirm the request originated from Vidyard. NOTE — this is a plaintext
+        echoed secret, not an HMAC request signature; there is no published
+        signing algorithm, timestamp, or replay defense.
+    source_ips:
+      - 54.164.55.156
+      - 54.165.206.34
+      - 54.164.57.33
+      - 52.206.52.245
+      - 35.153.110.215
+      - 50.17.20.255
+    management_operations:
+      - method: POST
+        path: /v1/integrations/webhooks
+        summary: Create a subscription
+        request_fields: [url, security_key, event_subscriptions]
+        response: '{ "webhook_id": 123456 }'
+      - method: GET
+        path: /v1/integrations/webhooks
+        summary: List all subscriptions for the API token
+        response_fields: [id, url, security_key, is_valid, event_subscriptions]
+      - method: PUT
+        path: /v1/integrations/webhooks/{webhook_id}
+        summary: Update url, security_key or event_subscriptions
+      - method: DELETE
+        path: /v1/integrations/webhooks/{webhook_id}
+        summary: Delete a subscription
+    events:
+      - type: view
+        label: Percent watched
+        description: >
+          Percentage-milestone progress. Fires at 0, 25, 50, 75 and 100 — a full
+          watch therefore delivers five separate payloads. Milestones are
+          cumulative-amount based, not position based: watching the first 10%
+          then skipping ahead to watch another 15% triggers the 0 and 25 events.
+        cardinality: up to 5 per view
+        fields:
+          - {name: type, type: string}
+          - {name: timestamp, type: string, format: iso8601}
+          - {name: request_id, type: string}
+          - {name: visitor_vidyard_uuid, type: string}
+          - {name: organization_id, type: string, description: ID of the folder where the webhook is set up}
+          - {name: organization_name, type: string}
+          - {name: player_uuid, type: string}
+          - {name: player_name, type: string}
+          - {name: video_id, type: string}
+          - {name: video_name, type: string}
+          - {name: percent_watched, type: integer}
+          - {name: player_load_id, type: string, description: Unique per player load; a change indicates a new session or page refresh}
+          - {name: player_load_metadata, type: object, description: Custom data passed through via the vydata parameter}
+          - {name: account_id, type: string, description: Unique ID of the top-level folder in the account}
+          - {name: embed_url, type: string, description: Where the video was watched; UTM values preserved, other query strings stripped}
+          - {name: player_organization_id, type: string, description: Folder where the video itself lives}
+      - type: attention_span
+        label: Attention span
+        description: >
+          How many times a unique viewer watched each second of a video on a
+          given day. Delivered as an array of up to 200 buckets; videos longer
+          than 200 seconds are divided into 200 equal segments instead.
+        cardinality: one per viewer per day
+        fields:
+          - {name: type, type: string}
+          - {name: attention_span, type: object, description: Map of segment index to watch count, up to 200 entries}
+          - {name: day, type: string, format: iso8601, description: Date the attention_span set was calculated}
+          - {name: timestamp, type: string, format: iso8601}
+          - {name: request_id, type: string}
+          - {name: visitor_vidyard_uuid, type: string}
+          - {name: organization_id, type: string}
+          - {name: organization_name, type: string}
+          - {name: player_uuid, type: string}
+          - {name: player_name, type: string}
+          - {name: video_id, type: string}
+          - {name: video_name, type: string}
+          - {name: player_load_id, type: integer}
+          - {name: player_load_metadata, type: object}
+          - {name: account_id, type: string}
+      - type: identified_view
+        label: Identified view
+        description: >
+          A view resolved to a viewer email address. Queued when playback
+          starts and delivered only after a wall-clock duration equal to the
+          video length has elapsed, so percent_watched reflects the real
+          proportion watched. Fires exactly once — it does not re-fire on
+          resume or on later views within the same session.
+        cardinality: once per identified view
+        fields:
+          - {name: type, type: string}
+          - {name: timestamp, type: string, format: iso8601}
+          - {name: request_id, type: string}
+          - {name: visitor_vidyard_uuid, type: string}
+          - {name: organization_id, type: string}
+          - {name: organization_name, type: string}
+          - {name: account_id, type: string}
+          - {name: player_uuid, type: string}
+          - {name: player_name, type: string}
+          - {name: video_id, type: string}
+          - {name: video_name, type: string}
+          - {name: embed_url, type: string}
+          - {name: percent_watched, type: number}
+          - {name: player_load_id, type: string}
+          - {name: player_load_metadata, type: object}
+          - {name: player_organization_id, type: string}
+          - {name: email, type: string, description: Resolved viewer email address}
+
+  - name: Video Agent generation callback
+    kind: per-request callback
+    transport: HTTP POST
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/42909331296411-Using-the-Vidyard-Video-Agent-API
+    trigger: >
+      Supplied as the optional webhook_url field on a Video Agent API call;
+      Vidyard POSTs to it once the personalized video has finished generating.
+    payload_fields:
+      - {name: lead_owner_email, type: string}
+      - {name: email, type: string}
+      - {name: campaign_id, type: string}
+      - {name: approval_status, type: string, description: e.g. approved — present when the optional approval workflow is enabled}
+      - {name: video_uuid, type: string}
+      - {name: vy_custom_id, type: string, description: URL-encoded string echoed back from the request}
+      - {name: thumbnail_url, type: string}
+    note: >
+      When the optional approval process is enabled (must be turned on by
+      Vidyard Support/CSM), the callback is withheld until the avatar owner
+      approves; a rejected video is deleted and nothing is ever delivered.
+
+  - name: Asset webhooks (per-object)
+    kind: per-object callback
+    transport: HTTP POST
+    docs: https://developer.vidyard.com/
+    description: >
+      The Dashboard API accepts a webhook_url attribute when creating a video,
+      and exposes dedicated operations for registering analytics and player
+      webhooks against an organization.
+    operations:
+      - method: POST
+        path: "/dashboard/v1/organizations/:organization_id/webhooks/analytics"
+        summary: Registers an analytics webhook
+      - method: DELETE
+        path: "/dashboard/v1/organizations/:organization_id/webhooks/analytics/:id"
+        summary: Deletes an analytics webhook
+      - method: POST
+        path: "/dashboard/v1/organizations/:organization_id/webhooks/players"
+        summary: Registers a webhook that listens to changes on players
+      - method: DELETE
+        path: "/dashboard/v1/organizations/:organization_id/webhooks/players/:id"
+        summary: Delete a webhook that listens to changes on players
+    operations_note: >
+      Paths transcribed verbatim from the four api_webhooks entries in the
+      Dashboard API reference at developer.vidyard.com. Vidyard uses Rails
+      `:param` path syntax throughout its published reference.
+      A per-video `webhook_url` attribute is additionally accepted on
+      POST /dashboard/v1/videos.
+
+summary:
+  asyncapi_published: false
+  webhook_surfaces: 3
+  subscription_event_types: 3
+  signed_payloads: false
+  shared_secret: true
+  retry_policy: undocumented
+  delivery_guarantees: undocumented
+
+gaps:
+  - No AsyncAPI document, so the event surface is not machine-readable.
+  - No HMAC request signing — verification relies on a plaintext echoed security_key.
+  - No published retry policy, backoff schedule, or delivery-failure semantics.
+  - is_valid appears on the subscription record but its failure semantics are not documented.

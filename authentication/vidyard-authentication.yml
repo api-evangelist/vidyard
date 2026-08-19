@@ -1,0 +1,93 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://knowledge.vidyard.com/hc/en-us/articles/360010000133-How-to-use-the-Vidyard-Dashboard-API
+docs: https://knowledge.vidyard.com/hc/en-us/articles/360009875814-How-to-access-your-Vidyard-API-tokens
+derivation_note: >
+  Derived by hand from Vidyard's published documentation, not from a spec.
+  0-working/derive-authentication.py was not run because Vidyard publishes no
+  OpenAPI/Swagger document to read securitySchemes from — see
+  conformance/vidyard-conformance.yml.
+
+summary:
+  types: [apiKey]
+  api_key_in: [query, body]
+  api_key_in_header: false
+  oauth2: false
+  oauth2_flows: []
+  openid_connect: false
+  mutual_tls: false
+  bearer: false
+
+schemes:
+  - name: auth_token
+    type: apiKey
+    in: query
+    parameter: auth_token
+    applies_to:
+      - Vidyard Dashboard API
+      - Vidyard Analytics Webhook API
+      - Vidyard Video Agent API
+    description: >
+      A static, long-lived Vidyard API token. Passed either as a query
+      parameter on the URL or as an attribute in the JSON request body — the
+      documentation presents both as equally valid.
+    example_form: https://api.vidyard.com/endpoint?auth_token={yourToken}
+    required_headers:
+      Content-Type: application/json
+      Accept: application/json
+
+scoping:
+  model: folder + role
+  folder_scope: >
+    Tokens are unique to each FOLDER in the account. A token issued in a
+    subfolder can only act on assets in that folder. This is the primary
+    authorization boundary — there is no separate scope or permission parameter
+    on a request; the folder the token came from decides what it can reach.
+  role_scope: >
+    Tokens are also role-based. A token inherits exactly the dashboard actions
+    the issuing user's role permits, so two tokens from the same folder can
+    have different effective capability.
+  issuance:
+    ui_path: Admin > API Tokens
+    required_permission: Edit API tokens
+    team_requirement: >
+      The user must belong to a Team with the "Edit API tokens" permission
+      enabled. Analytics webhook setup through the UI instead requires the
+      "Edit Integrations" permission.
+  note: >
+    Users only see the API tokens relevant to their own role, and must switch
+    folders in the UI ("Change Folder") to obtain a token for a different
+    branch of the tree.
+
+related_mechanisms:
+  - name: Secure embed JWT
+    type: JWT
+    description: >
+      A separate, viewer-facing mechanism — not API authentication. Signed JSON
+      Web Tokens restrict playback of embedded videos to an authorized site.
+    docs: https://knowledge.vidyard.com/hc/en-us/articles/360009997733-Restrict-Vidyard-videos-to-your-secure-site-using-JSON-Web-Tokens
+  - name: Analytics webhook security_key
+    type: shared secret
+    description: >
+      Inbound-verification secret echoed on webhook delivery so a receiver can
+      confirm the caller is Vidyard. Not a request signature.
+    cross_reference: asyncapi/vidyard-webhooks.yml
+
+commercial_gate:
+  note: >
+    Vidyard's plan documentation states the Dashboard, Video Agent and
+    Analytics Webhook APIs are gated behind the Enterprise tier, while the
+    knowledge-base "Who Can Use This Feature?" banners list Free/Starter/Teams/
+    Enterprise with the caveat that the user must hold the Edit API tokens
+    permission. The two published statements disagree; treat API access as
+    sales-gated in practice.
+  see: plans/vidyard-plans-pricing.yml
+
+gaps:
+  - No OAuth 2.0 authorization-code flow — third-party apps cannot obtain delegated user access.
+  - No OpenID Connect discovery document (/.well-known/openid-configuration 404s on every host).
+  - Tokens are accepted in the QUERY STRING, where they leak into server logs, browser history, proxies and Referer headers.
+  - No documented token expiry, rotation, or revocation procedure.
+  - No Authorization header support is documented, which is the conventional and safer placement.
+  - No scopes: capability is implied by folder and role, and is not visible or assertable at request time.

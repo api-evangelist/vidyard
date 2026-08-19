@@ -1,0 +1,219 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.vidyard.com/
+docs:
+  - https://developer.vidyard.com/
+  - https://knowledge.vidyard.com/hc/en-us/articles/360010000133-How-to-use-the-Vidyard-Dashboard-API
+description: >
+  Cross-cutting request/response semantics for the Vidyard Dashboard API,
+  transcribed from the published apipie reference at developer.vidyard.com
+  (131 operations across 33 resources) and the knowledge-base API guide.
+  Vidyard is a Rails application and its conventions are Rails conventions:
+  page/per_page pagination, :param path segments, and snake_case attributes.
+
+authentication:
+  style: static API token
+  parameter: auth_token
+  placement: [query, body]
+  header_supported: false
+  scope_model: folder + role
+  cross_reference: authentication/vidyard-authentication.yml
+
+media_types:
+  request: application/json
+  response: application/json
+  required_headers:
+    Content-Type: application/json
+    Accept: application/json
+  also_supported:
+    - text/csv
+    - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  enforcement: >
+    Strictly enforced — a request without an acceptable Content-Type/Accept
+    returns 406, not a default JSON response.
+
+pagination:
+  style: page-number
+  supported: true
+  consistency: >
+    Uniform across every index/list operation checked (videos, players, events).
+  parameters:
+    - name: per_page
+      in: query
+      type: integer
+      required: false
+      maximum: 200
+      description: Number of items to show per page.
+    - name: page
+      in: query
+      type: integer
+      required: false
+      default: 1
+      description: >
+        Page number to return. IMPORTANT — only applies when per_page is also
+        supplied. Sending page alone is silently ignored.
+  response_fields: undocumented
+  response_note: >
+    Vidyard does not document a pagination envelope, a total count, a page
+    count, or Link headers. A client cannot tell whether more pages exist
+    except by requesting the next one and seeing an empty result.
+  max_page_size: 200
+
+sorting:
+  supported: true
+  parameters:
+    - name: order_by
+      in: query
+      description: Attribute to order the list by.
+      values_by_resource:
+        videos: [name, views, created_at, updated_at]
+        players: [name, created_at, updated_at]
+      note: >
+        The videos reference lists `views` as an allowed value in the
+        description but omits it from the stated validation set — a published
+        inconsistency, not a transcription error.
+    - name: direction
+      in: query
+      default: asc
+      values: [asc, desc]
+      description: Only applies when order_by is used.
+
+filtering_and_search:
+  supported: true
+  parameters:
+    - name: query
+      in: query
+      type: string
+      description: >
+        Free-text search across player/video name and associated tags.
+        Available on videos and players index operations.
+    - name: include_subgroups
+      in: query
+      type: boolean
+      default: false
+      description: Include players from sub-groups (players index).
+    - name: shared_only
+      in: query
+      type: boolean
+      description: Return only shared events (events index).
+  dedicated_search_operations:
+    - GET /dashboard/v1/players/search
+    - GET /dashboard/v1/players/advanced_search
+    - GET /dashboard/v1/events/search
+
+idempotency:
+  supported: false
+  header: null
+  note: >
+    NO IDEMPOTENCY CONTRACT. Vidyard publishes no Idempotency-Key header, no
+    request-deduplication window, and no retry-safety guidance on any of the
+    131 documented operations. Retrying a failed POST /dashboard/v1/videos or a
+    Video Agent generation call may produce duplicate assets, and nothing in
+    the documentation says otherwise. Recorded as absent deliberately — no
+    Idempotency pointer is emitted in apis.yml.
+
+versioning:
+  scheme: uri-path
+  current: v1
+  observed_versions: [v1, v1.1]
+  note: >
+    v1.1 exists on exactly one operation — GET /dashboard/v1.1/oembed, the
+    responsive-embed variant — alongside the v1 legacy form. There is no
+    published version policy, no version header, and no announced v2.
+  cross_reference: lifecycle/vidyard-lifecycle.yml
+
+path_conventions:
+  parameter_syntax: ":param"
+  example: /dashboard/v1/organizations/:organization_id/webhooks/analytics/:id
+  note: >
+    The reference uses Rails-style :param placeholders rather than the
+    OpenAPI {param} form. Several resources additionally expose a
+    `uuid=:uuid` lookup form alongside the numeric-id form, e.g.
+    /v1/players/uuid=:player_uuid/attributes — an unusual convention where the
+    lookup key is encoded into the path segment itself.
+
+identifiers:
+  numeric_id:
+    description: Sequential integer primary key, used for most resources.
+    example: 2222
+  uuid:
+    description: >
+      Short opaque base62-style string, 22 characters. The public-facing
+      identifier — it appears in share URLs, embed codes and webhook payloads.
+    example: 4epPofk8TYhIanJLgZyIeA
+    used_by: [video, player, visitor]
+  campaign_id:
+    description: RFC 4122 UUID, used by the Video Agent API for campaigns.
+    example: 66b37431-8f5c-4168-b58f-275a83246756
+  note: >
+    Two incompatible identifier schemes coexist. Many player and video
+    operations publish BOTH a /:id and a /uuid=:uuid variant of the same
+    endpoint.
+
+field_conventions:
+  case: snake_case
+  timestamps:
+    dashboard_api: >
+      Unix epoch integers on Dashboard API resources
+      (created_at: 1346961610, updated_at: 1346961610).
+    webhooks: >
+      ISO 8601 strings on webhook payloads
+      (timestamp: "2017-05-15T15:01:29Z").
+    note: >
+      INCONSISTENT — the same logical concept is serialized two different ways
+      depending on which surface emits it.
+
+request_tracing:
+  request_id_header: undocumented
+  note: >
+    No correlation-id request header is documented. A request_id IS present in
+    every analytics webhook payload, but it identifies the outbound event, not
+    an inbound API call, so it cannot be used to trace an API request.
+
+field_expansion:
+  supported: false
+  note: No expand/include/fields sparse-fieldset parameter is documented.
+
+metadata:
+  supported: partial
+  mechanisms:
+    - name: custom attributes
+      description: >
+        A first-class resource (/dashboard/v1/attributes) supporting default
+        attributes and per-player attributes, with full CRUD.
+    - name: player_load_metadata
+      description: >
+        Arbitrary data passed through to webhook payloads via the client-side
+        vydata parameter.
+    - name: vy_custom_id
+      description: >
+        URL-encoded string accepted by the Video Agent API and echoed back on
+        the generation callback — the correlation handle for that surface.
+
+error_handling:
+  envelope: undocumented
+  format: http-status
+  statuses: [400, 401, 403, 404, 406, 422]
+  cross_reference: errors/vidyard-problem-types.yml
+
+rate_limit_signalling:
+  response_headers: undocumented
+  status_on_exhaustion: undocumented
+  published_limits: >
+    Video Agent API only — 1,000/minute and 25,000/day.
+  cross_reference: rate-limits/vidyard-rate-limits.yml
+
+bulk_operations:
+  supported: partial
+  operations:
+    - "PATCH /dashboard/v1/users — bulk_users_update, updates user information"
+    - "PATCH /dashboard/v1/videos/:video_id/tags — update a video's tags (DEPRECATED)"
+    - "PATCH tag update operations for players"
+
+summary:
+  pagination: page-number
+  idempotency: false
+  rfc9457: false
+  versioning: uri-path
+  request_tracing: false
+  field_expansion: false

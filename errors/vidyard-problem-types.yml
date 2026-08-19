@@ -1,0 +1,98 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.vidyard.com/
+docs: https://developer.vidyard.com/
+format: http-status
+format_note: >
+  NOT RFC 9457. Vidyard publishes no application/problem+json media type, no
+  error `type` URIs, and no machine-readable error body schema. Every operation
+  page in the Dashboard API reference carries the same fixed "Errors" table of
+  HTTP status codes and prose descriptions — that table is reproduced here
+  verbatim. There is no error-code registry beyond the status codes themselves.
+
+envelope:
+  documented: false
+  note: >
+    Vidyard does not publish the shape of an error response body anywhere in
+    its reference or knowledge base. Only the status code and its meaning are
+    specified. An agent cannot parse a Vidyard error programmatically beyond
+    branching on the status code.
+
+problems:
+  - status: 400
+    title: Bad Request
+    detail: body has wrong syntax or unable to handle request
+    remediation: >
+      Verify the request body is valid JSON and that Content-Type and Accept
+      are both set to application/json.
+    retryable: false
+  - status: 401
+    title: Unauthorized
+    detail: auth_token omitted or authentication failed
+    remediation: >
+      Supply auth_token as a query parameter or a body attribute. Confirm the
+      token has not been rotated in Admin > API Tokens.
+    retryable: false
+    cross_reference: authentication/vidyard-authentication.yml
+  - status: 403
+    title: Forbidden
+    detail: This action cannot be performed
+    remediation: >
+      The token's ROLE does not permit this action, or the token belongs to a
+      different FOLDER than the target asset. Re-issue a token from the correct
+      folder, or from a user whose role allows the operation.
+    retryable: false
+  - status: 404
+    title: Not Found
+    detail: The requested resource could not be found
+    remediation: >
+      Check the identifier. Note that a resource outside the token's folder
+      scope is not necessarily distinguishable from one that does not exist.
+    retryable: false
+  - status: 406
+    title: Not Acceptable
+    detail: >
+      Accept or Content-Type headers must be application/json, text/csv or
+      application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    remediation: >
+      Set both Accept and Content-Type to a supported media type. Observed
+      live: GET https://api.vidyard.com/dashboard/v1 with no Accept header
+      returns 406 with body {"error":"Invalid content-type. API currently only
+      supports ..."} — this is the one error body Vidyard emits that could be
+      captured unauthenticated.
+    retryable: false
+    supported_media_types:
+      - application/json
+      - text/csv
+      - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  - status: 422
+    title: Unprocessable Entity
+    detail: body has wrong attributes
+    remediation: >
+      One or more attributes failed validation. The per-operation "Params"
+      table in the reference lists each parameter's type constraint
+      (Must be a String / has to be Boolean / has to be Integer).
+    retryable: false
+
+rate_limit_errors:
+  documented: false
+  note: >
+    No 429 response is listed in the Dashboard API error table on any of the
+    131 operation pages, and no Retry-After behaviour is documented — even
+    though the Video Agent API publishes hard numeric limits (1,000/min,
+    25,000/day). What the API returns when those limits are exceeded is
+    unspecified.
+  cross_reference: rate-limits/vidyard-rate-limits.yml
+
+summary:
+  problem_count: 6
+  rfc9457: false
+  error_body_schema_published: false
+  error_code_registry: false
+  status_codes: [400, 401, 403, 404, 406, 422]
+
+gaps:
+  - No RFC 9457 application/problem+json support.
+  - No stable machine-readable error codes — only HTTP statuses.
+  - No documented error response body, so failures cannot be parsed reliably.
+  - No documented 429 or Retry-After despite published numeric rate limits.

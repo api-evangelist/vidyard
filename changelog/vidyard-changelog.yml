@@ -1,0 +1,166 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.vidyard.com/product-updates/
+url: https://www.vidyard.com/product-updates/
+name: Vidyard Product Updates / Release History
+description: Vidyard publishes a dated product changelog at /product-updates/ under a "Release History
+  — Track our product evolution Month by Month" heading. Entries are product-feature announcements written
+  for end users, dated to MONTH granularity only. There are no version numbers, no API-specific release
+  notes, and no breaking-change notices — an API consumer cannot learn from this feed whether a Dashboard
+  API operation changed. The one API-relevant entry in the captured window is the December 2025 launch
+  of the Video Agent API.
+scheme:
+  versioning: none
+  granularity: month
+  dated: true
+  api_specific: false
+  breaking_changes_flagged: false
+  machine_readable: false
+  feed: null
+  note: No RSS/Atom feed and no WordPress custom post type for product updates (wp-json/wp/v2/types exposes
+    no product-update type), so the changelog is readable only by scraping the rendered page.
+current_version: null
+window:
+  from: 2025-11
+  to: 2026-08
+  entry_count: 22
+entries:
+- date: 2026-08
+  month: August 2026
+  title: Help your videos show up in Google and AI answers
+  summary: Now your videos can get indexed by Google and surfaced in AI answers from ChatGPT, Perplexity,
+    Gemini (and more) so buyers find your content when they search. Flip on Optimize metadata and your
+    title, description, and tr
+- date: 2026-07
+  month: July 2026
+  title: Keep your growing video library organized
+  summary: 'Organize your personal videos into folders and subfolders that match how you work. Your folder
+    structure also carries into Gmail, Outlook, Salesforce, and other partner apps, making it easier to
+    find and share the right '
+- date: 2026-07
+  month: July 2026
+  title: Reach viewers watching with the sound off
+  summary: Captions now turn on automatically for viewers on every new video, with no setup required.
+    This helps more people follow your message when they're watching without sound, in a noisy space,
+    or reading along in a second la
+- date: 2026-07
+  month: July 2026
+  title: Spend less time clicking and more time communicating
+  summary: The redesigned Vidyard Chrome Extension streamlines every step of recording and sending videos.
+    With a cleaner layout and simpler workflow, it's faster to create and share videos from the tools
+    you use every day.
+- date: 2026-05
+  month: May 2026
+  title: Help viewers stay engaged without disrupting their workflow
+  summary: Vidyard videos now support theater mode and picture-in-picture, making it easier to watch videos
+    alongside the rest of your work. Viewers can expand videos for a larger experience or keep them visible
+    in a floating windo
+- date: 2026-04
+  month: April 2026
+  title: Find videos faster with new library filters
+  summary: 'You can now filter your library by video origin—Uploads, Recorder, or Avatar—to quickly scan
+    and organize mixed content. This makes it easier to audit your videos, locate specific recordings,
+    and review content by type, '
+- date: 2026-04
+  month: April 2026
+  title: Take the hard work out of structuring your videos
+  summary: Videos now include AI-generated chapters and descriptions, automatically breaking content into
+    clear sections. This makes longer videos easier to navigate and understand while saving creators the
+    time and effort of manua
+- date: 2026-04
+  month: April 2026
+  title: Keep campaigns in sync with team-based enrollment
+  summary: Share campaigns with entire teams instead of adding people one by one. Everyone on the team
+    is enrolled automatically, and access updates as teams change—so campaigns stay active, consistent,
+    and easy to scale while user
+- date: 2026-04
+  month: April 2026
+  title: Scale video creation with shared AI avatars
+  summary: AI Avatars can now be shared with teammates so others can create videos using your likeness.
+    Grant access, track usage, and maintain visibility while scaling video creation across campaigns,
+    outreach, and internal commun
+- date: 2026-03
+  month: March 2026
+  title: Automate personalized video inside Gong Flows
+  summary: Video Agent now works directly within Gong Flows, automatically generating personalized videos
+    for each recipient when an email is sent. This helps teams scale one-to-one video outreach without
+    manual work, keeping engag
+- date: 2026-03
+  month: March 2026
+  title: Add a human touch without turning on your camera
+  summary: You can now add a profile picture to your videos directly from the Chrome extension, giving
+    every recording a consistent, personal presence without being on camera. This makes it easier to create
+    more engaging videos and
+- date: 2026-03
+  month: March 2026
+  title: See how AI video is being used across your team
+  summary: 'AI Video Insights gives a clear view of adoption and engagement across your organization.
+    See who’s creating videos, review video performance, and track usage trends over time. Filter by team,
+    avatar type, or generation '
+- date: 2026-03
+  month: March 2026
+  title: Take the guesswork out of naming your videos
+  summary: Make every video easier to understand at a glance. AI-generated titles automatically summarize
+    your video and suggest clear, relevant captions, helping viewers quickly see what the video is about
+    while saving creators th
+- date: 2026-02
+  month: February 2026
+  title: Find the voice that fits you best
+  summary: 'AI Avatars now let you preview and choose your voice right after creation. Switch between
+    available models, hear the difference instantly, and apply the one that fits best. You can refine
+    your avatar’s voice anytime, so '
+- date: 2026-02
+  month: February 2026
+  title: Improved AI Avatar setup with real-time recording guidance
+  summary: AI Avatars are now easier to get right from the start. Real-time recording checks guide framing,
+    lighting, and audio before you hit record, helping you capture stronger training inputs. The result
+    is a higher-quality ava
+- date: 2026-01
+  month: January 2026
+  title: Scale your Campaigns with stronger ownership and flexibility
+  summary: Campaigns are now easier to manage as your team grows. Participants are notified when they’re
+    added, can choose which avatar they use, and can duplicate campaigns they’re part of. Campaign ownership
+    can be transferred an
+- date: 2025-12
+  month: December 2025
+  title: Boost engagement with personalized thumbnail captions
+  summary: Capture attention before viewers even press play. Personalized thumbnail captions let you add
+    viewer-specific text, like a first name or company name, directly to your video thumbnail so every
+    message feels instantly rel
+- date: 2025-12
+  month: December 2025
+  title: Bring your Campaigns to life with video backgrounds
+  summary: Create more engaging campaign videos with less effort. Add video backgrounds behind your AI
+    Avatar to deliver branded, dynamic messages that stand out in inboxes and feel more human.
+- date: 2025-12
+  month: December 2025
+  title: Power any workflow with the Video Agent API
+  summary: 'The new Video Agent API gives you the flexibility to trigger personalized video generation
+    from any application in your tech stack. For teams ready to go beyond out-of-the-box automation, the
+    API opens the door to fully '
+- date: 2025-11
+  month: November 2025
+  title: Automate everywhere
+  summary: Connect Vidyard’s powerful Video Agent to thousands of your favorite apps with our new Zapier
+    integration! Automate video generation workflows more easily with a no-code tool.
+- date: 2025-11
+  month: November 2025
+  title: Picture perfect, anywhere
+  summary: A new update designed to help you record more professional videos from anywhere. With camera
+    backgrounds in the Chrome extension, you can maintain privacy, reduce distractions, and keep your
+    message front and center.
+- date: 2025-11
+  month: November 2025
+  title: Fine-tune your delivery
+  summary: Fine-tune the speed, tone, and expression of your AI Avatar videos to keep them sounding authentic,
+    engaging, and on-brand — whether you’re making a high-energy intro or a thoughtful renewal recap.
+api_relevant_entries:
+- date: 2025-12
+  title: Power any workflow with the Video Agent API
+  note: Launch of the Video Agent API — the only entry in the captured window that announces an API surface
+    change.
+gaps:
+- No API changelog — product updates only; the 131 Dashboard API operations have no release notes.
+- Month-level dates only; no exact release dates.
+- No version numbers and no breaking-change labelling.
+- No RSS/Atom feed or machine-readable representation.

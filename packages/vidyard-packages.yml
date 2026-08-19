@@ -1,0 +1,127 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  registry.npmjs.org search + package metadata, pypi.org, rubygems.org,
+  api.github.com/orgs/Vidyard, and
+  https://knowledge.vidyard.com/hc/en-us/categories/360000962493-Developer-tools-resources
+note: >
+  Vidyard ships NO server-side API client library in any language. The two
+  first-party npm packages are browser/player tooling for the embed surface,
+  not SDKs for the Dashboard, Video Agent or Analytics Webhook REST APIs — a
+  developer calling those APIs writes raw HTTP. This is the single largest
+  ergonomics gap in Vidyard's developer surface. Registry currency was read
+  from registry.npmjs.org, pypi.org and rubygems.org metadata endpoints on
+  2026-08-13.
+
+packages:
+  - language: javascript
+    registry: npm
+    name: "@vidyard/embed-code"
+    url: https://www.npmjs.com/package/@vidyard/embed-code
+    install: npm install @vidyard/embed-code
+    official: true
+    version: 4.3.25
+    published: '2026-07-28'
+    license: MIT
+    description: The Vidyard player embed code, also known as Embed V4.
+    scope: player-embed
+    repository: https://github.com/Vidyard/vidyard-player-sdk
+    repository_status: >
+      Declared in package.json as Vidyard/vidyard-player-sdk (directory
+      packages/embed-code) but the GitHub API returns 404 for that repo — the
+      monorepo is private. The published package is public; its source is not.
+    evidence: >
+      Scoped to the @vidyard npm org and published by the vidyard-npm-ci
+      automation account alongside 13 named Vidyard maintainers. Documented by
+      Vidyard at knowledge.vidyard.com ("Vidyard player embed npm package").
+    note: >
+      Actively maintained — released 2026-07-28, the most current first-party
+      artifact Vidyard publishes anywhere.
+
+  - language: javascript
+    registry: npm
+    name: "@vidyard/vy-cli"
+    url: https://www.npmjs.com/package/@vidyard/vy-cli
+    install: npm install -g @vidyard/vy-cli
+    official: true
+    version: 1.1.0
+    published: '2021-05-13'
+    license: MIT
+    description: Vidyard CLI to speed up CTA development.
+    scope: cta-development
+    repository: null
+    repository_status: >
+      package.json declares git+https://github.com/Development/vy-cli.git,
+      which is not a Vidyard-owned path and does not resolve. No public source.
+    evidence: >
+      Scoped to the @vidyard npm org with the same maintainer set as
+      @vidyard/embed-code, including the vidyard-npm-ci publisher account.
+    note: >
+      ABANDONMENT SIGNAL — last published 2021-05-13, over five years stale, and
+      it wraps only CTA development, not the REST APIs. Not referenced from any
+      current Vidyard documentation page. See cli/vidyard-cli.yml.
+
+  - language: javascript
+    registry: cdn
+    name: Vidyard Embed v4 loader
+    url: https://play.vidyard.com/embed/v4.js
+    install: '<script type="text/javascript" async src="https://play.vidyard.com/embed/v4.js"></script>'
+    official: true
+    version: null
+    published: null
+    note: >
+      Unpinned CDN distribution — the URL floats to whatever v4 build Vidyard
+      currently serves, so a consumer cannot determine which version they load
+      and neither can this pipeline. There is no jsDelivr/unpkg metadata
+      endpoint for a vendor-hosted path. The major version (v4) is the only
+      guarantee in the contract. Recorded as null deliberately: checked,
+      nothing versioned to record.
+    evidence: >
+      Published verbatim in
+      https://knowledge.vidyard.com/hc/en-us/articles/360019034753-Using-the-Vidyard-Player-API
+
+third_party:
+  - language: ruby
+    registry: rubygems
+    name: vidyard
+    url: https://rubygems.org/gems/vidyard
+    official: false
+    version: 0.0.2
+    published: '2014-12-16'
+    author: Taylor C. MacDonald
+    source: https://github.com/tcmacdonald/vidyard
+    note: >
+      Community gem, unaffiliated with Vidyard, last released 2014. Predates the
+      current Dashboard API surface by a decade — not usable and not endorsed.
+  - language: javascript
+    registry: npm
+    name: eleventy-plugin-vidyard
+    url: https://www.npmjs.com/package/eleventy-plugin-vidyard
+    official: false
+    version: 2.0.0
+    published: '2025-12-24'
+    note: Community Eleventy shortcode for responsive Vidyard embeds.
+  - language: javascript
+    registry: npm
+    name: "@mintplayer/vidyard-player"
+    url: https://www.npmjs.com/package/@mintplayer/vidyard-player
+    official: false
+    version: 20.0.0
+    published: '2026-06-04'
+    note: Community Angular wrapper around the Vidyard player.
+
+registries_checked:
+  - {registry: npm, result: 2 first-party packages}
+  - {registry: pypi, result: none — vidyard, vidyard-api, python-vidyard all 404}
+  - {registry: rubygems, result: one abandoned third-party gem}
+  - {registry: packagist, result: none}
+  - {registry: crates.io, result: none}
+  - {registry: nuget, result: none}
+  - {registry: maven-central, result: none}
+  - {registry: pkg.go.dev, result: none}
+
+summary:
+  official_count: 3
+  official_sdk_count: 0
+  rest_api_client_libraries: 0
+  third_party_count: 3

@@ -1,4 +1,21 @@
 specificationVersion: "0.1"
+generated: '2026-08-13'
+method: searched
+source: https://www.vidyard.com/pricing/
+plan_count: 4
+provenance_note: >
+  Tier names, structure and feature lists re-verified against
+  https://www.vidyard.com/pricing/ (HTTP 200) on 2026-08-13. The page renders
+  its price figures client-side, so the numeric prices below were read during
+  the 2026-06-12 pass and are carried forward; the tier shape, the
+  "Custom pricing / Talk to Sales" treatment on Teams and Enterprise, and the
+  Video Agent add-on are all present in the served HTML today. Two facts added
+  this pass and confirmed in the page markup: an annual billing toggle
+  advertising "Save 30%", and a 14-day trial offered on Starter.
+billing:
+  annual_discount: "30% (advertised on the Annually toggle)"
+  trial: 14-day trial on Starter
+  add_on: Video Agent — unlimited AI videos, 3 custom AI avatars, unlimited automated creation and delivery; custom pricing on Teams and Enterprise
 name: Vidyard Plans and Pricing
 description: >
   Vidyard offers four tiers of service — Free, Starter, Teams, and Enterprise —

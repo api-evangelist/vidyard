@@ -1,0 +1,200 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://trust.vidyard.com/ , https://developer.vidyard.com/ and
+  https://knowledge.vidyard.com/hc/en-us/categories/360000962493-Developer-tools-resources
+note: >
+  Compliance claims come from Vidyard's SafeBase trust center, which names its
+  attestations publicly. Technical-standard conformance is assessed against the
+  published HTML API reference — there is no OpenAPI to test against, which is
+  itself the largest conformance gap.
+
+standards:
+  - id: openapi
+    conforms: false
+    evidence: >
+      No OpenAPI or Swagger document is published. Probed and 404 on every
+      host: api.vidyard.com/openapi.json|.yaml|/swagger.json|/api-docs,
+      developer.vidyard.com/openapi.json|/swagger.json, plus the apipie-rails
+      JSON siblings (/apidoc.json, /apidoc/v1.json, /apidoc/v1/swagger.json).
+      The reference is apipie-generated static HTML only.
+
+  - id: asyncapi
+    conforms: false
+    evidence: >
+      No AsyncAPI document. Webhook events are documented in prose with payload
+      examples — see asyncapi/vidyard-webhooks.yml.
+
+  - id: graphql
+    conforms: false
+    evidence: No GraphQL surface documented or discoverable.
+
+  - id: grpc
+    conforms: false
+    evidence: No .proto definitions in the GitHub org, on buf.build, or in the docs.
+
+  - id: mcp
+    conforms: false
+    evidence: >
+      No MCP server. mcp.vidyard.com does not resolve (NXDOMAIN);
+      api.vidyard.com/mcp and www.vidyard.com/mcp both 404.
+
+  - id: a2a
+    conforms: true
+    grade: near-conformant
+    evidence: >
+      A2A Agent Card served at https://www.vidyard.com/.well-known/agent-card.json
+      (HTTP 200, application/json). capabilities is an object, protocolVersion
+      is present, skills is an array — all hard checks pass. Missing the
+      optional preferredTransport, and card.url points at a human contact page
+      rather than a callable agent endpoint.
+    artifact: a2a/vidyard-a2a.yml
+
+  - id: llms-txt
+    conforms: true
+    evidence: >
+      https://www.vidyard.com/llms.txt returns HTTP 200 with a well-formed
+      llms.txt — H1, blockquote summary, and categorised link sections
+      (Overview & Company, Sign Up & Demos, Integrations, Case Studies, …).
+    artifact: llms/vidyard-llms.txt
+
+  - id: oembed
+    conforms: true
+    evidence: >
+      Two published oEmbed provider operations —
+      GET /dashboard/v1/oembed (legacy embed) and
+      GET /dashboard/v1.1/oembed (responsive embed) — both citing oembed.com.
+
+  - id: oauth2
+    conforms: false
+    evidence: >
+      No OAuth 2.0. Authentication is a static folder-scoped API token passed
+      as the auth_token query parameter or body attribute.
+      /.well-known/oauth-authorization-server 404s on every host.
+
+  - id: openid-connect
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on all four hosts.
+
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >
+      No application/problem+json. Errors are bare HTTP status codes with prose
+      descriptions and no documented response body.
+
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on all four hosts.
+
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: >
+      Nine operations carry a DEPRECATED badge in the HTML reference, but no
+      Sunset or Deprecation header is documented and no removal dates are given.
+
+  - id: rfc8615-well-known-uris
+    conforms: partial
+    evidence: >
+      One well-known document served — the A2A agent card on www.vidyard.com.
+      Every other probed path 404s across all four hosts.
+
+  - id: json-api
+    conforms: false
+    evidence: >
+      Responses are plain JSON objects. No JSON:API media type, no data/
+      attributes/relationships envelope.
+
+  - id: pagination
+    conforms: true
+    evidence: >
+      Consistent page-number pagination across index operations — page +
+      per_page (maximum 200), with order_by/direction sorting. No pagination
+      envelope or total count is returned, so it is a partial contract.
+    artifact: conventions/vidyard-conventions.yml
+
+  - id: idempotency
+    conforms: false
+    evidence: >
+      No Idempotency-Key header, no deduplication window, no retry-safety
+      guidance on any of the 131 documented operations.
+
+  - id: webhooks
+    conforms: true
+    evidence: >
+      Three subscription event types (view, attention_span, identified_view)
+      with a REST subscription API on analytics-api.vidyard.com, published
+      payload schemas, a field glossary, and a source-IP allowlist.
+    artifact: asyncapi/vidyard-webhooks.yml
+    caveat: >
+      Verification is a plaintext echoed shared secret, not an HMAC signature.
+
+  - id: gdpr
+    conforms: true
+    evidence: >
+      Named on the Vidyard trust center compliance list. Additionally backed by
+      a first-class API surface — POST /dashboard/v1/gdpr_requests exists for
+      submitting data-subject requests programmatically.
+    source: https://trust.vidyard.com/
+
+  - id: soc2-type2
+    conforms: true
+    evidence: >
+      "SOC 2 Type 2" listed under Compliance and Attestations on the Vidyard
+      trust center. The report itself is behind the SafeBase access request.
+    source: https://trust.vidyard.com/
+
+  - id: microsoft-sspa
+    conforms: true
+    evidence: >
+      "Microsoft SSPA" (Supplier Security and Privacy Assurance) listed under
+      Compliance and Attestations on the Vidyard trust center.
+    source: https://trust.vidyard.com/
+
+  - id: iso-27001
+    conforms: false
+    evidence: Not listed among the trust center attestations.
+
+  - id: pci-dss
+    conforms: false
+    evidence: Not listed; Vidyard is not a payments provider.
+
+  - id: hipaa
+    conforms: false
+    evidence: >
+      Not listed among the trust center attestations, despite Vidyard marketing
+      an Enterprise Healthcare vertical.
+
+  - id: fedramp
+    conforms: false
+    evidence: Not listed among the trust center attestations.
+
+compliance_program:
+  published: true
+  trust_center: https://trust.vidyard.com/
+  platform: SafeBase
+  certifications:
+    - SOC 2 Type 2
+    - GDPR
+    - Microsoft SSPA
+  gated_documents: >
+    Network/infrastructure/data-flow diagrams, sanitized executive policy
+    summary, acceptable use and backup policies, BC/DR plans, penetration
+    testing results and RTO/RPO figures are all listed but require an access
+    request through SafeBase.
+  public_disclosures:
+    - Responsible Disclosure
+    - Application Penetration Testing
+    - Secure Development Training
+    - Automated Compliance Monitoring
+    - Data Loss Prevention (DLP)
+    - Event & Audit Log Management
+    - Multi-Factor Authentication
+    - Amazon Web Services infrastructure
+  legal_entity: Buildscale, Inc d/b/a Vidyard
+
+summary:
+  standards_assessed: 22
+  conforms: 8
+  partial: 1
+  machine_readable_contract: false
+  compliance_published: true

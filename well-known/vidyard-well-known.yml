@@ -1,0 +1,89 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every apis.yml host
+note: >
+  Exactly one .well-known document is served across all four Vidyard hosts: the
+  A2A agent card on www.vidyard.com. Every RFC-defined discovery path
+  (security.txt, openid-configuration, oauth-authorization-server, api-catalog)
+  404s everywhere. Vidyard publishes no security.txt, so no SecurityTxt pointer
+  is emitted; the vulnerability-disclosure evidence comes from the human
+  /security/ page instead.
+
+hosts:
+  - host: https://www.vidyard.com
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 200
+        content_type: application/json; charset=utf-8
+        file: ../a2a/vidyard-agent-card.json
+        kind: A2A Agent Card
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+
+  - host: https://api.vidyard.com
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+
+  - host: https://developer.vidyard.com
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+
+  - host: https://analytics-api.vidyard.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+
+summary:
+  paths_probed: 27
+  documents_served: 1
+  security_txt: false
+  openid_configuration: false
+  oauth_authorization_server: false
+  api_catalog: false
+  agent_card: true
