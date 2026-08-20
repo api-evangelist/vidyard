@@ -35,6 +35,16 @@ tags:
   - CRM Integration
   - Marketing
   - AI Video
+  - Webhook
+tags_raw:
+  - Video
+  - Video Platform
+  - Video Analytics
+  - Video Sharing
+  - Sales Video
+  - CRM Integration
+  - Marketing
+  - AI Video
   - Webhooks
 
 apis:
@@ -49,6 +59,11 @@ apis:
     humanURL: https://developer.vidyard.com/
     baseURL: https://api.vidyard.com/dashboard/v1/
     tags:
+      - Video Management
+      - Players
+      - Analytics
+      - Webhook
+    tags_raw:
       - Video Management
       - Players
       - Analytics
@@ -97,6 +112,11 @@ apis:
     humanURL: https://knowledge.vidyard.com/hc/en-us/articles/360009879654-How-to-use-the-analytics-subscription-webhook
     baseURL: https://analytics-api.vidyard.com/v1/
     tags:
+      - Analytics
+      - Webhook
+      - Viewer Data
+      - Real-Time
+    tags_raw:
       - Analytics
       - Webhooks
       - Viewer Data
