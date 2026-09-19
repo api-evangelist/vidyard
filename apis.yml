@@ -71,7 +71,7 @@ apis:
     baseURL: https://api.vidyard.com/dashboard/v1/
     tags:
       - Video Management
-      - Players
+      - Player
       - Analytics
       - Webhook
     tags_raw:
