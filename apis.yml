@@ -47,6 +47,7 @@ tags:
   - Marketing
   - AI Video
   - Webhook
+  - A2A
 tags_raw:
   - Video
   - Video Platform
@@ -57,6 +58,7 @@ tags_raw:
   - Marketing
   - AI Video
   - Webhooks
+  - A2A
 
 apis:
   - name: Vidyard Dashboard API
@@ -247,3 +249,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 14
   pass: local-v1
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://www.vidyard.com/.well-known/agent-card.json"
+  grade: "near-conformant"
+  protocol_version: "1.0.0"
+  control: 404
